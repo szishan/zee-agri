@@ -8,148 +8,491 @@
     <title>Agri Solution BD</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         html {
-    scroll-behavior: smooth;
-}
+            scroll-behavior: smooth;
+        }
+
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f8f4;
+            font-family: Arial, "Noto Sans Bengali", sans-serif;
+            background: #f4f8f4;
             color: #222;
         }
 
-        /* Navigation */
+        /* =========================
+           NAVIGATION
+        ========================= */
+
         nav {
-            background-color: #14532d;
-            padding: 18px;
+            background: #14532d;
+            padding: 16px 20px;
             text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
         }
 
         nav a {
+            display: inline-block;
             color: white;
             text-decoration: none;
-            margin: 0 12px;
-            font-weight: bold;
+            margin: 5px 9px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
         }
 
         nav a:hover {
-            color: #b7f7c5;
+            color: #bbf7d0;
+            transform: translateY(-1px);
         }
 
-        /* Hero Section */
+        /* =========================
+           MOVABLE DATE WIDGET
+        ========================= */
+
+        #date-widget {
+            position: fixed;
+            top: 75px;
+            right: 20px;
+            z-index: 2000;
+
+            min-width: 215px;
+            padding: 12px 16px;
+
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid #bbf7d0;
+            border-left: 4px solid #15803d;
+            border-radius: 12px;
+
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+
+            cursor: grab;
+            user-select: none;
+
+            backdrop-filter: blur(8px);
+        }
+
+        #date-widget:active {
+            cursor: grabbing;
+        }
+
+        .date-title {
+            font-size: 11px;
+            color: #166534;
+            font-weight: bold;
+            margin-bottom: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .english-date {
+            font-size: 15px;
+            font-weight: bold;
+            color: #14532d;
+            margin-bottom: 4px;
+        }
+
+        .bangla-date {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .date-hint {
+            font-size: 9px;
+            color: #777;
+            margin-top: 6px;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
         .hero {
             text-align: center;
-            padding: 80px 20px;
-            background-color: #dcfce7;
+            padding: 100px 20px 85px;
+            background:
+                linear-gradient(
+                    rgba(220, 252, 231, 0.94),
+                    rgba(240, 253, 244, 0.97)
+                );
         }
 
         .hero h1 {
             font-size: 48px;
             color: #14532d;
-            margin-bottom: 10px;
+            margin: 0 0 12px;
         }
 
         .hero h2 {
             font-size: 25px;
             color: #166534;
+            margin: 10px 0;
         }
 
         .hero p {
             font-size: 18px;
-            max-width: 700px;
+            max-width: 720px;
             margin: 20px auto;
-            line-height: 1.6;
+            line-height: 1.7;
+            color: #374151;
         }
 
-        .hero button {
-            background-color: #15803d;
+        .hero button,
+        .explore-btn,
+        .hero-btn {
+            background: #15803d;
             color: white;
             border: none;
-            padding: 14px 28px;
-            font-size: 17px;
-            border-radius: 6px;
+            padding: 13px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
             cursor: pointer;
+            transition: 0.3s;
         }
 
-        .hero button:hover {
-            background-color: #166534;
+        .hero button:hover,
+        .explore-btn:hover,
+        .hero-btn:hover {
+            background: #166534;
+            transform: translateY(-2px);
         }
 
-        /* Sections */
+        /* =========================
+           SECTIONS
+        ========================= */
+
         .section {
-            padding: 50px 20px;
+            padding: 65px 20px;
             text-align: center;
+            max-width: 1200px;
+            margin: auto;
         }
 
         .section h2 {
             color: #14532d;
             font-size: 30px;
+            margin-bottom: 12px;
         }
 
-        /* Cards */
+        .section > p {
+            max-width: 760px;
+            margin: 0 auto;
+            line-height: 1.7;
+            color: #555;
+        }
+
+        /* =========================
+           CARDS
+        ========================= */
+
         .cards {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            align-items: stretch;
+            gap: 22px;
             flex-wrap: wrap;
-            margin-top: 30px;
+            margin-top: 32px;
         }
 
         .card {
-            background-color: white;
+            background: white;
             width: 220px;
             padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 14px;
+
+            border: 1px solid #e5e7eb;
+
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.11);
         }
 
         .card h3 {
             color: #15803d;
+            margin-top: 0;
         }
 
         .card p {
-            line-height: 1.5;
+            line-height: 1.6;
+            color: #444;
         }
 
-        /* Footer */
+        .card button {
+            background: #15803d;
+            color: white;
+            border: none;
+            padding: 9px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 8px;
+            transition: 0.3s;
+        }
+
+        .card button:hover {
+            background: #166534;
+        }
+
+        /* AEZ hidden area */
+
+        #more-zones {
+            display: none;
+            width: 100%;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 22px;
+            margin-top: 22px;
+        }
+
+        #more-zones .card {
+            width: auto;
+        }
+
+        .explore-btn {
+            margin-top: 30px;
+        }
+
+        /* =========================
+           CROP DETAILS
+        ========================= */
+
+        #crop-info {
+            width: 100%;
+            max-width: 750px;
+            margin: 40px auto 0;
+            text-align: left;
+        }
+
+        #crop-info h2 {
+            color: #14532d;
+            margin-top: 0;
+        }
+
+        #crop-info p {
+            margin: 10px 0;
+        }
+
+        /* =========================
+           ABOUT ME
+        ========================= */
+
+        .about-card {
+            width: 100%;
+            max-width: 650px;
+            margin: 35px auto 0;
+        }
+
+        .about-photo {
+            width: 155px;
+            height: 155px;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+            margin: 0 auto 20px;
+
+            border: 5px solid #dcfce7;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .about-card h3 {
+            font-size: 23px;
+        }
+
+        /* =========================
+           CONTACT
+        ========================= */
+
+        .contact-card {
+            width: 240px;
+        }
+
+        .contact-icon {
+            width: 45px;
+            height: 45px;
+            margin: 0 auto 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #dcfce7;
+            color: #15803d;
+            border-radius: 50%;
+        }
+
+        .contact-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+
+        .contact-card a {
+            color: #15803d;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
         footer {
-            background-color: #14532d;
+            background: #14532d;
             color: white;
             text-align: center;
-            padding: 25px;
+            padding: 30px 20px;
             margin-top: 30px;
+        }
+
+        footer p {
+            margin: 7px 0;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 768px) {
+
+            nav {
+                padding: 12px 10px;
+            }
+
+            nav a {
+                font-size: 12px;
+                margin: 4px 5px;
+            }
+
+            .hero {
+                padding: 80px 18px 65px;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero h2 {
+                font-size: 21px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .section {
+                padding: 50px 15px;
+            }
+
+            .section h2 {
+                font-size: 25px;
+            }
+
+            #date-widget {
+                top: 65px;
+                right: 10px;
+                min-width: 190px;
+                padding: 10px 12px;
+            }
+
+            .english-date {
+                font-size: 13px;
+            }
+
+            .bangla-date {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            .card {
+                width: 100%;
+                max-width: 330px;
+            }
+
+            #date-widget {
+                min-width: 175px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Navigation -->
-   <nav>
+    <!-- =========================
+         MOVABLE DATE WIDGET
+    ========================== -->
 
-    <a href="#home">Home</a>
+    <div id="date-widget">
 
-    <a href="#agro-zones">Agro Zones</a>
+        <div class="date-title">
+            📅 TODAY / আজ
+        </div>
 
-    <a href="#crops">Crops</a>
+        <div id="english-date" class="english-date">
+            Loading...
+        </div>
 
-    <a href="#pest-disease">Pest & Disease</a>
+        <div id="bangla-date" class="bangla-date">
+            Loading...
+        </div>
 
-    <a href="#ipm">IPM</a>
+        <div class="date-hint">
+            Drag to move • টেনে সরানো যাবে
+        </div>
 
-    <a href="#products">Products</a>
+    </div>
 
-    <a href="#farmer-help">Farmer Help</a>
 
-    <a href="#services">Services</a>
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
 
-    <a href="#about">About Me</a>
+    <nav>
 
-    <a href="#contact">Contact</a>
+        <a href="#home">Home</a>
 
-</nav>
+        <a href="#agro-zones">Agro Zones</a>
 
-    <!-- Hero Section -->
+        <a href="#crops">Crops</a>
+
+        <a href="#pest-disease">Pest & Disease</a>
+
+        <a href="#ipm">IPM</a>
+
+        <a href="#products">Products</a>
+
+        <a href="#farmer-help">Farmer Help</a>
+
+        <a href="#about">About Me</a>
+
+        <a href="#contact">Contact</a>
+
+    </nav>
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
     <section class="hero" id="home">
 
         <h1>🌱 Agri Solution BD</h1>
@@ -161,272 +504,352 @@
             growers, students and agriculture enthusiasts.
         </p>
 
-        <button>Explore Agriculture</button>
+        <button class="hero-btn" onclick="document.getElementById('agro-zones').scrollIntoView({behavior:'smooth'})">
+            Explore Agriculture
+        </button>
 
     </section>
 
-     <!-- Agro-Ecological Zones -->
-<section class="section" id="agro-zones">
 
-    <h2>🗺️ Bangladesh Agro-Ecological Zones</h2>
+    <!-- =========================
+         AGRO-ECOLOGICAL ZONES
+    ========================== -->
 
-    <p>
-        Explore the 30 Agro-Ecological Zones of Bangladesh
-        and learn about their soil, climate and agricultural characteristics.
-    </p>
+    <section class="section" id="agro-zones">
 
-    <div class="cards">
+        <h2>🗺️ Bangladesh Agro-Ecological Zones</h2>
 
-        <div class="card">
-            <h3>AEZ 1</h3>
-            <p>Old Himalayan Piedmont Plain</p>
+        <p>
+            Explore the 30 Agro-Ecological Zones of Bangladesh
+            and learn about their soil, climate and agricultural characteristics.
+        </p>
+
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>AEZ 1</h3>
+                <p>Old Himalayan Piedmont Plain</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 2</h3>
+                <p>Active Tista Floodplain</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 3</h3>
+                <p>Tista Meander Floodplain</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 4</h3>
+                <p>Karatoya-Bangali Floodplain</p>
+            </div>
+
         </div>
 
-        <div class="card">
-            <h3>AEZ 2</h3>
-            <p>Active Tista Floodplain</p>
+
+        <!-- AEZ 5-30 -->
+
+        <div id="more-zones">
+
+            <div class="card">
+                <h3>AEZ 5</h3>
+                <p>Lower Atrai Basin</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 6</h3>
+                <p>Lower Purnabhaba Floodplain</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 7</h3>
+                <p>Active Brahmaputra-Jamuna Floodplain</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 8</h3>
+                <p>Young Brahmaputra-Jamuna Floodplain</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 9</h3>
+                <p>Old Brahmaputra Floodplain</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 10</h3>
+                <p>Active Ganges Floodplain</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 11</h3>
+                <p>High Ganges River Floodplain</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 12</h3>
+                <p>Low Ganges River Floodplain</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 13</h3>
+                <p>Ganges Tidal Floodplain</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 14</h3>
+                <p>Gopalganj-Khulna Bils</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 15</h3>
+                <p>Arial Bil</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 16</h3>
+                <p>Middle Meghna River Floodplain</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 17</h3>
+                <p>Lower Meghna River Floodplain</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 18</h3>
+                <p>Young Meghna Estuarine Floodplain</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 19</h3>
+                <p>Old Meghna Estuarine Floodplain</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 20</h3>
+                <p>Eastern Surma-Kushiyara Floodplain</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 21</h3>
+                <p>Sylhet Basin</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 22</h3>
+                <p>Northern and Eastern Piedmont Plain</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 23</h3>
+                <p>Chittagong Coastal Plain</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 24</h3>
+                <p>St. Martin's Coral Island</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 25</h3>
+                <p>Level Barind Tract</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 26</h3>
+                <p>High Barind Tract</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 27</h3>
+                <p>North-Eastern Barind Tract</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 28</h3>
+                <p>Madhupur Tract</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 29</h3>
+                <p>Northern and Eastern Hills</p>
+            </div>
+
+            <div class="card">
+                <h3>AEZ 30</h3>
+                <p>Akhaura Terrace</p>
+            </div>
+
         </div>
 
-        <div class="card">
-            <h3>AEZ 3</h3>
-            <p>Tista Meander Floodplain</p>
-        </div>
 
-        <div class="card">
-            <h3>AEZ 4</h3>
-            <p>Karatoya-Bangali Floodplain</p>
-        </div>
+        <button
+            id="explore-zones-btn"
+            class="explore-btn"
+            onclick="
+                document.getElementById('more-zones').style.display='grid';
+                this.style.display='none';
+            "
+        >
+            Explore More
+        </button>
 
-        <div class="card">
-            <h3>AEZ 5</h3>
-            <p>Lower Atrai Basin</p>
-        </div>
+    </section>
 
-        <div class="card">
-            <h3>AEZ 6</h3>
-            <p>Lower Purnabhaba Floodplain</p>
-        </div>
 
-        <div class="card">
-            <h3>AEZ 7</h3>
-            <p>Active Brahmaputra-Jamuna Floodplain</p>
-        </div>
+    <!-- =========================
+         AGRICULTURE SOLUTIONS
+    ========================== -->
 
-        <div class="card">
-            <h3>AEZ 8</h3>
-            <p>Young Brahmaputra-Jamuna Floodplain</p>
-        </div>
+    <section class="section" id="crops">
 
-        <div class="card">
-            <h3>AEZ 9</h3>
-            <p>Old Brahmaputra Floodplain</p>
-        </div>
+        <h2>🌱 Our Agriculture Solutions</h2>
 
-        <div class="card">
-            <h3>AEZ 10</h3>
-            <p>Active Ganges Floodplain</p>
-        </div>
+        <p>
+            Explore useful agricultural information,
+            crop management and sustainable farming solutions.
+        </p>
 
-        <div class="card">
-            <h3>AEZ 11</h3>
-            <p>High Ganges River Floodplain</p>
-        </div>
-
-        <div class="card">
-            <h3>AEZ 12</h3>
-            <p>Low Ganges River Floodplain</p>
-        </div>
-
-        <div class="card">
-            <h3>AEZ 13</h3>
-            <p>Ganges Tidal Floodplain</p>
-        </div>
-
-        <div class="card">
-            <h3>AEZ 14</h3>
-            <p>Gopalganj-Khulna Bils</p>
-        </div>
-
-        <div class="card">
-            <h3>AEZ 15</h3>
-            <p>Arial Bil</p>
-        </div>
-
-        <div class="card">
-            <h3>AEZ 16</h3>
-            <p>Middle Meghna River Floodplain</p>
-        </div>
-
-        <div class="card">
-            <h3>AEZ 17</h3>
-            <p>Lower Meghna River Floodplain</p>
-        </div>
-
-        <div class="card">
-            <h3>AEZ 18</h3>
-            <p>Young Meghna Estuarine Floodplain</p>
-        </div>
-
-        <div class="card">
-            <h3>AEZ 19</h3>
-            <p>Old Meghna Estuarine Floodplain</p>
-        </div>
-
-        <div class="card">
-            <h3>AEZ 20</h3>
-            <p>Eastern Surma-Kushiyara Floodplain</p>
-        </div>
-
-        <div class="card">
-            <h3>AEZ 21</h3>
-            <p>Sylhet Basin</p>
-        </div>
-
-        <div class="card">
-            <h3>AEZ 22</h3>
-            <p>Northern and Eastern Piedmont Plain</p>
-        </div>
-
-        <div class="card">
-            <h3>AEZ 23</h3>
-            <p>Chittagong Coastal Plain</p>
-        </div>
-
-        <div class="card">
-            <h3>AEZ 24</h3>
-            <p>St. Martin's Coral Island</p>
-        </div>
-
-        <div class="card">
-            <h3>AEZ 25</h3>
-            <p>Level Barind Tract</p>
-        </div>
-
-        <div class="card">
-            <h3>AEZ 26</h3>
-            <p>High Barind Tract</p>
-        </div>
-
-        <div class="card">
-            <h3>AEZ 27</h3>
-            <p>North-Eastern Barind Tract</p>
-        </div>
-
-        <div class="card">
-            <h3>AEZ 28</h3>
-            <p>Madhupur Tract</p>
-        </div>
-
-        <div class="card">
-            <h3>AEZ 29</h3>
-            <p>Northern and Eastern Hills</p>
-        </div>
-
-        <div class="card">
-            <h3>AEZ 30</h3>
-            <p>Akhaura Terrace</p>
-        </div>
-
-    </div>
-
-    <br>
-
-    <button>Explore All 30 Zones</button>
-
-</section>
-    <!-- Agriculture Services -->
-<section class="section" id="crops">
-
-        <h2>Our Agriculture Solutions</h2>
 
         <div class="cards">
 
             <div class="card" onclick="showCrop('rice')">
 
-    <h3>🌾 Crop Information</h3>
+                <h3>🌾 Crop Information</h3>
 
-    <p>
-        Explore crop varieties, cultivation,
-        pests, diseases and management.
-    </p>
+                <p>
+                    Explore crop varieties, cultivation,
+                    pests, diseases and management.
+                </p>
 
-    <button>Explore Crops</button>
+                <button>Explore Crops</button>
 
-</div>
+            </div>
 
-            <div class="card">
+
+            <div class="card" id="pest-disease">
+
                 <h3>🐛 Pest & Disease</h3>
+
                 <p>
                     Identify agricultural pests and
                     diseases with proper management.
                 </p>
+
             </div>
 
-            <div class="card">
+
+            <div class="card" id="ipm">
+
                 <h3>🛡️ IPM</h3>
+
                 <p>
                     Learn Integrated Pest Management
                     and sustainable crop protection.
                 </p>
+
             </div>
 
-            <div class="card">
+
+            <div class="card" id="products">
+
                 <h3>🛒 Agriculture Products</h3>
+
                 <p>
                     Seeds, fertilizers, plants,
                     bio-inputs and agricultural products.
                 </p>
+
             </div>
 
         </div>
-        <!-- Crop Selection -->
-<div class="cards">
 
-    <div class="card" onclick="showCrop('rice')">
-        <h3>🌾 Rice</h3>
-        <p>ধান</p>
-        <button>View Details</button>
-    </div>
 
-    <div class="card" onclick="showCrop('wheat')">
-        <h3>🌾 Wheat</h3>
-        <p>গম</p>
-        <button>View Details</button>
-    </div>
+        <!-- CROP SELECTION -->
 
-    <div class="card" onclick="showCrop('maize')">
-        <h3>🌽 Maize</h3>
-        <p>ভুট্টা</p>
-        <button>View Details</button>
-    </div>
+        <div class="cards">
 
-    <div class="card" onclick="showCrop('chili')">
-        <h3>🌶️ Chili</h3>
-        <p>মরিচ</p>
-        <button>View Details</button>
-    </div>
+            <div class="card" onclick="showCrop('rice')">
 
-    <div class="card" onclick="showCrop('tomato')">
-        <h3>🍅 Tomato</h3>
-        <p>টমেটো</p>
-        <button>View Details</button>
-    </div>
+                <h3>🌾 Rice</h3>
 
-</div>
-    <!-- Crop Details -->
-    <div id="crop-info" class="card" style="max-width: 700px; margin: 30px auto;">
+                <p>ধান</p>
 
-        <h2>🌱 Select a Crop</h2>
+                <button>View Details</button>
 
-        <p>
-            Click "Explore Crops" to view crop information.
-        </p>
+            </div>
 
-    </div>
+
+            <div class="card" onclick="showCrop('wheat')">
+
+                <h3>🌾 Wheat</h3>
+
+                <p>গম</p>
+
+                <button>View Details</button>
+
+            </div>
+
+
+            <div class="card" onclick="showCrop('maize')">
+
+                <h3>🌽 Maize</h3>
+
+                <p>ভুট্টা</p>
+
+                <button>View Details</button>
+
+            </div>
+
+
+            <div class="card" onclick="showCrop('chili')">
+
+                <h3>🌶️ Chili</h3>
+
+                <p>মরিচ</p>
+
+                <button>View Details</button>
+
+            </div>
+
+
+            <div class="card" onclick="showCrop('tomato')">
+
+                <h3>🍅 Tomato</h3>
+
+                <p>টমেটো</p>
+
+                <button>View Details</button>
+
+            </div>
+
+        </div>
+
+
+        <!-- CROP DETAILS -->
+
+        <div id="crop-info" class="card">
+
+            <h2>🌱 Select a Crop</h2>
+
+            <p>
+                Click a crop to view its information.
+            </p>
+
+        </div>
+
     </section>
 
-    <!-- Farmer Help -->
-    <section class="section">
+
+    <!-- =========================
+         FARMER HELP
+    ========================== -->
+
+    <section class="section" id="farmer-help">
 
         <h2>👨‍🌾 Farmer Help</h2>
 
@@ -435,59 +858,66 @@
             and solutions for better farming.
         </p>
 
-        <button>Get Agriculture Help</button>
+        <br>
+
+        <button
+            class="hero-btn"
+            onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})"
+        >
+            Get Agriculture Help
+        </button>
 
     </section>
 
-    <!-- Footer -->
-    <footer>
 
-        <p>© 2026 Agri Solution BD</p>
+    <!-- =========================
+         ABOUT ME
+    ========================== -->
 
-        <p>
-            Information • Products • Services • Solutions
-        </p>
-
-    </footer>
-
-</body>
-
-</html>```html
-    <!-- About Me -->
     <section class="section" id="about">
 
         <h2>👨‍🌾 About Me</h2>
 
-        <div class="cards">
 
-            <div class="card">
-                <h3>Sayed Zishan Ahmed</h3>
+        <div class="card about-card">
 
-                <p>
-                    Diploma in Agriculture
-                </p>
+            <img
+                src="images/my-photo.jpg"
+                alt="Sayed Zishan Ahmed"
+                class="about-photo"
+            >
 
-                <p>
-                    Agriculture Training Institute, Hathazari
-                </p>
 
-                <p>
-                    Interested in agriculture, crop production,
-                    pest and disease identification, Integrated
-                    Pest Management (IPM) and modern agricultural technologies.
-                </p>
+            <h3>Sayed Zishan Ahmed</h3>
 
-            </div>
+
+            <p>
+                Diploma in Agriculture
+            </p>
+
+
+            <p>
+                Agriculture Training Institute, Hathazari
+            </p>
+
+
+            <p>
+                Interested in agriculture, crop production,
+                pest and disease identification, Integrated
+                Pest Management (IPM) and modern agricultural technologies.
+            </p>
 
         </div>
 
     </section>
 
 
-    <!-- Contact -->
+    <!-- =========================
+         CONTACT
+    ========================== -->
+
     <section class="section" id="contact">
-<img src="profile.jpg" alt="Sayed Zishan Ahmed"
-     style="width: 180px; height: 180px; object-fit: cover; border-radius: 50%; border: 4px solid #15803d; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+
         <h2>📞 Contact Me</h2>
 
         <p>
@@ -495,181 +925,777 @@
             project-related communication, feel free to contact me.
         </p>
 
+
         <div class="cards">
 
-            <div class="card">
-                <h3>📧 Email</h3>
+
+            <!-- EMAIL -->
+
+            <div class="card contact-card">
+
+                <div class="contact-icon">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M2 5.5A2.5 2.5 0 0 1 4.5 3h15A2.5 2.5 0 0 1 22 5.5v13a2.5 2.5 0 0 1-2.5 2.5h-15A2.5 2.5 0 0 1 2 18.5v-13ZM4.5 5a.5.5 0 0 0-.5.5v.3l8 5.2 8-5.2v-.3a.5.5 0 0 0-.5-.5h-15ZM20 8.2l-7.45 4.84a1 1 0 0 1-1.1 0L4 8.2v10.3a.5.5 0 0 0 .5.5h15a.5.5 0 0 0 .5-.5V8.2Z"/>
+                    </svg>
+
+                </div>
+
+                <h3>Email</h3>
 
                 <p>
                     <a href="mailto:szishanahmed0@gmail.com">
                         szishanahmed0@gmail.com
                     </a>
                 </p>
+
             </div>
 
 
-            <div class="card">
-                <h3>📱 Phone</h3>
+            <!-- PHONE -->
+
+            <div class="card contact-card">
+
+                <div class="contact-icon">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M6.6 2.5a2 2 0 0 1 2.1 1.2l1.3 3a2 2 0 0 1-.45 2.2L8.2 10.2a15.5 15.5 0 0 0 5.6 5.6l1.3-1.35a2 2 0 0 1 2.2-.45l3 1.3a2 2 0 0 1 1.2 2.1l-.2 2.1a2 2 0 0 1-2 1.8C10.8 21.3 2.7 13.2 2.7 3.9a2 2 0 0 1 1.8-2l2.1-.2Z"/>
+                    </svg>
+
+                </div>
+
+                <h3>Phone</h3>
 
                 <p>
                     <a href="tel:+8801305981300">
                         +880 1305-981300
                     </a>
                 </p>
+
             </div>
 
 
-            <div class="card">
-                <h3>📘 Facebook</h3>
+            <!-- FACEBOOK -->
+
+            <div class="card contact-card">
+
+                <div class="contact-icon">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.87.24-1.46 1.5-1.46h1.7V4c-.3-.04-1.32-.13-2.52-.13-2.5 0-4.22 1.53-4.22 4.34V10H7.2v3h2.76v8h3.54Z"/>
+                    </svg>
+
+                </div>
+
+                <h3>Facebook</h3>
 
                 <p>
-                    <a href="https://www.facebook.com/s.zishan.ahmed"
-                       target="_blank">
+                    <a
+                        href="https://www.facebook.com/s.zishan.ahmed"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         Visit My Facebook Profile
                     </a>
                 </p>
+
             </div>
 
 
-            <div class="card">
-                <h3>📍 Location</h3>
+            <!-- LOCATION -->
+
+            <div class="card contact-card">
+
+                <div class="contact-icon">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2.5a7 7 0 0 0-7 7c0 5.1 7 12 7 12s7-6.9 7-12a7 7 0 0 0-7-7Zm0 9.4a2.4 2.4 0 1 1 0-4.8 2.4 2.4 0 0 1 0 4.8Z"/>
+                    </svg>
+
+                </div>
+
+                <h3>Location</h3>
 
                 <p>
                     Chattogram, Bangladesh
                 </p>
+
             </div>
+
 
         </div>
 
     </section>
-```
-<script>
 
-function showCrop(crop) {
 
-    const cropInfo = document.getElementById("crop-info");
+    <!-- =========================
+         FOOTER
+    ========================== -->
 
-    if (crop === "rice") {
+    <footer>
 
-        cropInfo.innerHTML = `
-            <h2>🌾 Rice (ধান)</h2>
+        <p>
+            © 2026 Agri Solution BD
+        </p>
 
-            <p><strong>Crop Type:</strong> Cereal Crop</p>
+        <p>
+            Information • Products • Services • Solutions
+        </p>
 
-            <p><strong>Growing Seasons:</strong> Aus, Aman, Boro</p>
+    </footer>
 
-            <p><strong>Suitable Soil:</strong> Loam to clay loam soil</p>
 
-            <p><strong>Climate:</strong> Warm and humid climate</p>
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
 
-            <p><strong>Major Pests:</strong> Rice stem borer, Brown planthopper</p>
+    <script>
 
-            <p><strong>Major Diseases:</strong> Blast, Bacterial leaf blight</p>
+        /* ==========================================
+           BANGLA DATE
+           Bangladesh Revised Bengali Calendar
+        ========================================== */
 
-            <p><strong>IPM:</strong> Field monitoring, resistant varieties,
-            balanced fertilizer use and biological control.</p>
+        function getBanglaDate(date) {
 
-            <p><strong>Harvesting:</strong> Depending on variety and season</p>
-        `;
+            const banglaMonths = [
+                "বৈশাখ",
+                "জ্যৈষ্ঠ",
+                "আষাঢ়",
+                "শ্রাবণ",
+                "ভাদ্র",
+                "আশ্বিন",
+                "কার্তিক",
+                "অগ্রহায়ণ",
+                "পৌষ",
+                "মাঘ",
+                "ফাল্গুন",
+                "চৈত্র"
+            ];
 
-    }
 
-    else if (crop === "wheat") {
+            /*
+                14 April 2026 = 1 Boishakh 1433
+            */
 
-        cropInfo.innerHTML = `
-            <h2>🌾 Wheat (গম)</h2>
+            const baseDate = new Date(2026, 3, 14);
 
-            <p><strong>Crop Type:</strong> Cereal Crop</p>
+            const currentDate = new Date(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate()
+            );
 
-            <p><strong>Growing Season:</strong> Rabi</p>
 
-            <p><strong>Suitable Soil:</strong> Well-drained loam soil</p>
+            let difference =
+                Math.floor(
+                    (currentDate - baseDate) /
+                    (1000 * 60 * 60 * 24)
+                );
 
-            <p><strong>Climate:</strong> Cool and dry climate</p>
 
-            <p><strong>Major Pests:</strong> Aphid, Armyworm</p>
+            let banglaYear = 1433;
 
-            <p><strong>Major Diseases:</strong> Rust, Leaf blight</p>
 
-            <p><strong>IPM:</strong> Use healthy seed, field monitoring
-            and proper crop management.</p>
+            /*
+                Find Bengali year
+            */
 
-            <p><strong>Harvesting:</strong> When the crop becomes fully mature</p>
-        `;
+            if (difference >= 0) {
 
-    }
-else if (crop === "maize") {
+                banglaYear =
+                    1433 +
+                    Math.floor(difference / 365);
 
-    cropInfo.innerHTML = `
-        <h2>🌽 Maize (ভুট্টা)</h2>
-        <p><strong>Crop Type:</strong> Cereal Crop</p>
-        <p><strong>Growing Season:</strong> Rabi and Kharif</p>
-        <p><strong>Suitable Soil:</strong> Well-drained fertile soil</p>
-        <p><strong>Climate:</strong> Warm climate</p>
-        <p><strong>Major Pests:</strong> Fall armyworm, Stem borer</p>
-        <p><strong>Major Diseases:</strong> Leaf blight, Downy mildew</p>
-        <p><strong>IPM:</strong> Regular field monitoring, healthy seed,
-        balanced fertilizer and proper pest management.</p>
-        <p><strong>Harvesting:</strong> Harvest when the crop reaches
-        appropriate maturity.</p>
-    `;
+            } else {
 
-}    
-    else if (crop === "chili") {
+                banglaYear =
+                    1433 +
+                    Math.floor(difference / 365);
 
-        cropInfo.innerHTML = `
-            <h2>🌶️ Chili (মরিচ)</h2>
+            }
 
-            <p><strong>Crop Type:</strong> Vegetable / Spice Crop</p>
 
-            <p><strong>Growing Season:</strong> Rabi and Kharif</p>
+            /*
+                Calculate day within Bengali year
+            */
 
-            <p><strong>Suitable Soil:</strong> Fertile, well-drained soil</p>
+            let dayOfYear = difference;
 
-            <p><strong>Climate:</strong> Warm climate</p>
+            while (dayOfYear < 0) {
 
-            <p><strong>Major Pests:</strong> Thrips, Aphid, Mite</p>
+                banglaYear--;
 
-            <p><strong>Major Diseases:</strong> Anthracnose, Leaf curl</p>
+                dayOfYear += 365;
 
-            <p><strong>IPM:</strong> Regular monitoring, sanitation,
-            healthy seedlings and appropriate biological control.</p>
+            }
 
-            <p><strong>Harvesting:</strong> Harvest according to market
-            requirement and variety.</p>
-        `;
 
-    }
+            /*
+                Month lengths according to
+                Bangladesh revised calendar
+            */
 
-    else if (crop === "tomato") {
+            const monthLengths = [
+                31, 31, 31, 31, 31,
+                30, 30, 30, 30, 30,
+                29, 30
+            ];
 
-        cropInfo.innerHTML = `
-            <h2>🍅 Tomato (টমেটো)</h2>
 
-            <p><strong>Crop Type:</strong> Vegetable Crop</p>
+            /*
+                Approximate leap year handling
+                for Falgun
+            */
 
-            <p><strong>Growing Season:</strong> Mainly Rabi</p>
+            const gregorianYear =
+                date.getFullYear();
 
-            <p><strong>Suitable Soil:</strong> Fertile, well-drained loam soil</p>
 
-            <p><strong>Climate:</strong> Mild and relatively cool climate</p>
+            const isLeapYear =
+                (
+                    gregorianYear % 4 === 0 &&
+                    gregorianYear % 100 !== 0
+                ) ||
+                (gregorianYear % 400 === 0);
 
-            <p><strong>Major Pests:</strong> Fruit borer, Whitefly, Aphid</p>
 
-            <p><strong>Major Diseases:</strong> Early blight, Late blight,
-            Bacterial wilt</p>
+            if (isLeapYear) {
+                monthLengths[10] = 30;
+            }
 
-            <p><strong>IPM:</strong> Healthy seedlings, field sanitation,
-            monitoring and integrated pest management.</p>
 
-            <p><strong>Harvesting:</strong> Harvest when fruits reach
-            appropriate maturity.</p>
-        `;
-    }
+            let monthIndex = 0;
 
-    cropInfo.scrollIntoView({
-        behavior: "smooth"
-    });
-}
 
-</script>
+            while (
+                dayOfYear >= monthLengths[monthIndex] &&
+                monthIndex < 11
+            ) {
+
+                dayOfYear -=
+                    monthLengths[monthIndex];
+
+                monthIndex++;
+
+            }
+
+
+            const banglaDay =
+                dayOfYear + 1;
+
+
+            return {
+                day: banglaDay,
+                month: banglaMonths[monthIndex],
+                year: banglaYear
+            };
+
+        }
+
+
+        /* ==========================================
+           BANGLA NUMBER CONVERTER
+        ========================================== */
+
+        function toBanglaNumber(number) {
+
+            const englishNumbers =
+                "0123456789";
+
+            const banglaNumbers =
+                "০১২৩৪৫৬৭৮৯";
+
+
+            return String(number)
+                .split("")
+                .map(function (digit) {
+
+                    const index =
+                        englishNumbers.indexOf(digit);
+
+                    return index !== -1
+                        ? banglaNumbers[index]
+                        : digit;
+
+                })
+                .join("");
+
+        }
+
+
+        /* ==========================================
+           UPDATE DATE
+        ========================================== */
+
+        function updateDate() {
+
+            const today = new Date();
+
+
+            const englishDate =
+                today.toLocaleDateString(
+                    "en-GB",
+                    {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric"
+                    }
+                );
+
+
+            const bangla =
+                getBanglaDate(today);
+
+
+            const banglaDate =
+                toBanglaNumber(bangla.day)
+                + " "
+                + bangla.month
+                + " "
+                + toBanglaNumber(bangla.year)
+                + " বঙ্গাব্দ";
+
+
+            document.getElementById(
+                "english-date"
+            ).textContent =
+                englishDate;
+
+
+            document.getElementById(
+                "bangla-date"
+            ).textContent =
+                banglaDate;
+
+        }
+
+
+        updateDate();
+
+
+        /*
+            Update automatically every minute
+        */
+
+        setInterval(
+            updateDate,
+            60000
+        );
+
+
+        /* ==========================================
+           CROP INFORMATION
+        ========================================== */
+
+        function showCrop(crop) {
+
+            const cropInfo =
+                document.getElementById("crop-info");
+
+
+            if (crop === "rice") {
+
+                cropInfo.innerHTML = `
+
+                    <h2>🌾 Rice (ধান)</h2>
+
+                    <p>
+                        <strong>Crop Type:</strong>
+                        Cereal Crop
+                    </p>
+
+                    <p>
+                        <strong>Growing Seasons:</strong>
+                        Aus, Aman, Boro
+                    </p>
+
+                    <p>
+                        <strong>Suitable Soil:</strong>
+                        Loam to clay loam soil
+                    </p>
+
+                    <p>
+                        <strong>Climate:</strong>
+                        Warm and humid climate
+                    </p>
+
+                    <p>
+                        <strong>Major Pests:</strong>
+                        Rice stem borer, Brown planthopper
+                    </p>
+
+                    <p>
+                        <strong>Major Diseases:</strong>
+                        Blast, Bacterial leaf blight
+                    </p>
+
+                    <p>
+                        <strong>IPM:</strong>
+                        Field monitoring, resistant varieties,
+                        balanced fertilizer use and biological control.
+                    </p>
+
+                    <p>
+                        <strong>Harvesting:</strong>
+                        Depending on variety and season
+                    </p>
+
+                `;
+
+            }
+
+
+            else if (crop === "wheat") {
+
+                cropInfo.innerHTML = `
+
+                    <h2>🌾 Wheat (গম)</h2>
+
+                    <p>
+                        <strong>Crop Type:</strong>
+                        Cereal Crop
+                    </p>
+
+                    <p>
+                        <strong>Growing Season:</strong>
+                        Rabi
+                    </p>
+
+                    <p>
+                        <strong>Suitable Soil:</strong>
+                        Well-drained loam soil
+                    </p>
+
+                    <p>
+                        <strong>Climate:</strong>
+                        Cool and dry climate
+                    </p>
+
+                    <p>
+                        <strong>Major Pests:</strong>
+                        Aphid, Armyworm
+                    </p>
+
+                    <p>
+                        <strong>Major Diseases:</strong>
+                        Rust, Leaf blight
+                    </p>
+
+                    <p>
+                        <strong>IPM:</strong>
+                        Use healthy seed, field monitoring
+                        and proper crop management.
+                    </p>
+
+                    <p>
+                        <strong>Harvesting:</strong>
+                        When the crop becomes fully mature
+                    </p>
+
+                `;
+
+            }
+
+
+            else if (crop === "maize") {
+
+                cropInfo.innerHTML = `
+
+                    <h2>🌽 Maize (ভুট্টা)</h2>
+
+                    <p>
+                        <strong>Crop Type:</strong>
+                        Cereal Crop
+                    </p>
+
+                    <p>
+                        <strong>Growing Season:</strong>
+                        Rabi and Kharif
+                    </p>
+
+                    <p>
+                        <strong>Suitable Soil:</strong>
+                        Well-drained fertile soil
+                    </p>
+
+                    <p>
+                        <strong>Climate:</strong>
+                        Warm climate
+                    </p>
+
+                    <p>
+                        <strong>Major Pests:</strong>
+                        Fall armyworm, Stem borer
+                    </p>
+
+                    <p>
+                        <strong>Major Diseases:</strong>
+                        Leaf blight, Downy mildew
+                    </p>
+
+                    <p>
+                        <strong>IPM:</strong>
+                        Regular field monitoring, healthy seed,
+                        balanced fertilizer and proper pest management.
+                    </p>
+
+                    <p>
+                        <strong>Harvesting:</strong>
+                        Harvest when the crop reaches
+                        appropriate maturity.
+                    </p>
+
+                `;
+
+            }
+
+
+            else if (crop === "chili") {
+
+                cropInfo.innerHTML = `
+
+                    <h2>🌶️ Chili (মরিচ)</h2>
+
+                    <p>
+                        <strong>Crop Type:</strong>
+                        Vegetable / Spice Crop
+                    </p>
+
+                    <p>
+                        <strong>Growing Season:</strong>
+                        Rabi and Kharif
+                    </p>
+
+                    <p>
+                        <strong>Suitable Soil:</strong>
+                        Fertile, well-drained soil
+                    </p>
+
+                    <p>
+                        <strong>Climate:</strong>
+                        Warm climate
+                    </p>
+
+                    <p>
+                        <strong>Major Pests:</strong>
+                        Thrips, Aphid, Mite
+                    </p>
+
+                    <p>
+                        <strong>Major Diseases:</strong>
+                        Anthracnose, Leaf curl
+                    </p>
+
+                    <p>
+                        <strong>IPM:</strong>
+                        Regular monitoring, sanitation,
+                        healthy seedlings and appropriate
+                        biological control.
+                    </p>
+
+                    <p>
+                        <strong>Harvesting:</strong>
+                        Harvest according to market
+                        requirement and variety.
+                    </p>
+
+                `;
+
+            }
+
+
+            else if (crop === "tomato") {
+
+                cropInfo.innerHTML = `
+
+                    <h2>🍅 Tomato (টমেটো)</h2>
+
+                    <p>
+                        <strong>Crop Type:</strong>
+                        Vegetable Crop
+                    </p>
+
+                    <p>
+                        <strong>Growing Season:</strong>
+                        Mainly Rabi
+                    </p>
+
+                    <p>
+                        <strong>Suitable Soil:</strong>
+                        Fertile, well-drained loam soil
+                    </p>
+
+                    <p>
+                        <strong>Climate:</strong>
+                        Mild and relatively cool climate
+                    </p>
+
+                    <p>
+                        <strong>Major Pests:</strong>
+                        Fruit borer, Whitefly, Aphid
+                    </p>
+
+                    <p>
+                        <strong>Major Diseases:</strong>
+                        Early blight, Late blight,
+                        Bacterial wilt
+                    </p>
+
+                    <p>
+                        <strong>IPM:</strong>
+                        Healthy seedlings, field sanitation,
+                        monitoring and integrated pest management.
+                    </p>
+
+                    <p>
+                        <strong>Harvesting:</strong>
+                        Harvest when fruits reach
+                        appropriate maturity.
+                    </p>
+
+                `;
+
+            }
+
+
+            cropInfo.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        }
+
+
+        /* ==========================================
+           MOVABLE DATE WIDGET
+        ========================================== */
+
+        const dateWidget =
+            document.getElementById("date-widget");
+
+
+        let isDragging = false;
+
+        let offsetX = 0;
+
+        let offsetY = 0;
+
+
+        dateWidget.addEventListener(
+            "pointerdown",
+            function(event) {
+
+                isDragging = true;
+
+                dateWidget.setPointerCapture(
+                    event.pointerId
+                );
+
+
+                const rect =
+                    dateWidget.getBoundingClientRect();
+
+
+                offsetX =
+                    event.clientX - rect.left;
+
+                offsetY =
+                    event.clientY - rect.top;
+
+
+                dateWidget.style.right =
+                    "auto";
+
+                dateWidget.style.bottom =
+                    "auto";
+
+            }
+        );
+
+
+        dateWidget.addEventListener(
+            "pointermove",
+            function(event) {
+
+                if (!isDragging) {
+                    return;
+                }
+
+
+                let newLeft =
+                    event.clientX - offsetX;
+
+                let newTop =
+                    event.clientY - offsetY;
+
+
+                /*
+                    Keep widget inside screen
+                */
+
+                const maxLeft =
+                    window.innerWidth -
+                    dateWidget.offsetWidth;
+
+                const maxTop =
+                    window.innerHeight -
+                    dateWidget.offsetHeight;
+
+
+                newLeft =
+                    Math.max(
+                        0,
+                        Math.min(newLeft, maxLeft)
+                    );
+
+
+                newTop =
+                    Math.max(
+                        0,
+                        Math.min(newTop, maxTop)
+                    );
+
+
+                dateWidget.style.left =
+                    newLeft + "px";
+
+                dateWidget.style.top =
+                    newTop + "px";
+
+            }
+        );
+
+
+        dateWidget.addEventListener(
+            "pointerup",
+            function(event) {
+
+                isDragging = false;
+
+                try {
+
+                    dateWidget.releasePointerCapture(
+                        event.pointerId
+                    );
+
+                } catch (error) {}
+
+            }
+        );
+
+
+        dateWidget.addEventListener(
+            "pointercancel",
+            function() {
+
+                isDragging = false;
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
