@@ -208,6 +208,7 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 
             cursor: grab;
+            touch-action: none;
             user-select: none;
 
             backdrop-filter: blur(8px);
@@ -738,8 +739,8 @@
             #date-widget {
                 top: 65px;
                 right: 10px;
-                min-width: 185px;
-                padding: 10px 12px;
+               min-width: 160px;
+               padding: 7px 9px;
             }
 
             .top-controls {
@@ -789,14 +790,6 @@
             <option value="en">English</option>
             <option value="bn">বাংলা</option>
         </select>
-
-        <button class="control-btn" onclick="toggleDarkMode()" id="theme-button">
-            🌙
-        </button>
-
-        <button class="control-btn" onclick="toggleSettings()">
-            ⚙️
-        </button>
 
     </div>
 
@@ -1037,6 +1030,9 @@
             Contact
         </a>
 
+        <button class="control-btn" onclick="toggleSettings()">
+    ⚙️
+</button>
     </nav>
 
 
@@ -2731,60 +2727,36 @@
         const dateWidget =
             document.getElementById("date-widget");
 
-        let dragging = false;
+let dragging = false;
+let offsetX = 0;
+let offsetY = 0;
 
-        let offsetX = 0;
-        let offsetY = 0;
+dateWidget.addEventListener("pointerdown", function(event) {
+    dragging = true;
+    dateWidget.setPointerCapture(event.pointerId);
 
+    const rect = dateWidget.getBoundingClientRect();
+    offsetX = event.clientX - rect.left;
+    offsetY = event.clientY - rect.top;
 
-        dateWidget.addEventListener(
-            "mousedown",
-            function(event) {
+    event.preventDefault();
+});
 
-                dragging = true;
+dateWidget.addEventListener("pointermove", function(event) {
+    if (!dragging) return;
 
-                const rect =
-                    dateWidget.getBoundingClientRect();
+    dateWidget.style.left = (event.clientX - offsetX) + "px";
+    dateWidget.style.top = (event.clientY - offsetY) + "px";
+    dateWidget.style.right = "auto";
+});
 
-                offsetX =
-                    event.clientX - rect.left;
+dateWidget.addEventListener("pointerup", function() {
+    dragging = false;
+});
 
-                offsetY =
-                    event.clientY - rect.top;
-
-            }
-        );
-
-
-        document.addEventListener(
-            "mousemove",
-            function(event) {
-
-                if (!dragging) {
-                    return;
-                }
-
-                dateWidget.style.left =
-                    (event.clientX - offsetX) + "px";
-
-                dateWidget.style.top =
-                    (event.clientY - offsetY) + "px";
-
-                dateWidget.style.right =
-                    "auto";
-
-            }
-        );
-
-
-        document.addEventListener(
-            "mouseup",
-            function() {
-
-                dragging = false;
-
-            }
-        );
+dateWidget.addEventListener("pointercancel", function() {
+    dragging = false;
+});
 
 
         /* =========================
