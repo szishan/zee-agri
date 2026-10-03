@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="html-root">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Agri Solution BD</title>
+    <title id="page-title">Zee Agri | Agriculture Information & Solutions</title>
 
     <style>
         * {
@@ -16,11 +16,44 @@
             scroll-behavior: smooth;
         }
 
+        :root {
+            --primary: #15803d;
+            --primary-dark: #14532d;
+            --primary-light: #dcfce7;
+
+            --bg: #f4f8f4;
+            --card: #ffffff;
+            --text: #222222;
+            --muted: #555555;
+            --border: #e5e7eb;
+
+            --nav: #14532d;
+            --footer: #14532d;
+
+            --shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        body.dark {
+            --bg: #111827;
+            --card: #1f2937;
+            --text: #f3f4f6;
+            --muted: #d1d5db;
+            --border: #374151;
+
+            --nav: #052e16;
+            --footer: #052e16;
+
+            --primary-light: #14532d;
+
+            --shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+        }
+
         body {
             margin: 0;
             font-family: Arial, "Noto Sans Bengali", sans-serif;
-            background: #f4f8f4;
-            color: #222;
+            background: var(--bg);
+            color: var(--text);
+            transition: background 0.3s, color 0.3s;
         }
 
         /* =========================
@@ -28,20 +61,20 @@
         ========================= */
 
         nav {
-            background: #14532d;
-            padding: 16px 20px;
+            background: var(--nav);
+            padding: 13px 15px;
             text-align: center;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.18);
         }
 
         nav a {
             display: inline-block;
             color: white;
             text-decoration: none;
-            margin: 5px 9px;
+            margin: 5px 7px;
             font-weight: 600;
             font-size: 14px;
             transition: 0.3s;
@@ -53,19 +86,121 @@
         }
 
         /* =========================
-           MOVABLE DATE WIDGET
+           TOP CONTROLS
+        ========================= */
+
+        .top-controls {
+            position: fixed;
+            top: 72px;
+            left: 20px;
+            z-index: 1900;
+            display: flex;
+            gap: 7px;
+        }
+
+        .control-btn {
+            border: none;
+            background: var(--card);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 8px 11px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: var(--shadow);
+            transition: 0.3s;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        #language-select {
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text);
+            padding: 8px 9px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            outline: none;
+        }
+
+        /* =========================
+           SETTINGS PANEL
+        ========================= */
+
+        #settings-panel {
+            position: fixed;
+            top: 120px;
+            left: 20px;
+            width: 290px;
+            background: var(--card);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+            z-index: 2500;
+            display: none;
+        }
+
+        #settings-panel.show {
+            display: block;
+        }
+
+        .settings-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 18px;
+        }
+
+        .setting-row {
+            margin-bottom: 16px;
+        }
+
+        .setting-row label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        .setting-row select,
+        .setting-row input {
+            width: 100%;
+            padding: 9px;
+            border-radius: 7px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .settings-close {
+            float: right;
+            border: none;
+            background: transparent;
+            color: var(--text);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* =========================
+           DATE WIDGET
         ========================= */
 
         #date-widget {
             position: fixed;
             top: 75px;
             right: 20px;
-            z-index: 2000;
+            z-index: 1800;
 
             min-width: 215px;
             padding: 12px 16px;
 
             background: rgba(255, 255, 255, 0.96);
+            color: #222;
+
             border: 1px solid #bbf7d0;
             border-left: 4px solid #15803d;
             border-radius: 12px;
@@ -87,7 +222,6 @@
             color: #166534;
             font-weight: bold;
             margin-bottom: 5px;
-            letter-spacing: 0.5px;
         }
 
         .english-date {
@@ -114,7 +248,8 @@
 
         .hero {
             text-align: center;
-            padding: 100px 20px 85px;
+            padding: 110px 20px 90px;
+
             background:
                 linear-gradient(
                     rgba(220, 252, 231, 0.94),
@@ -122,15 +257,27 @@
                 );
         }
 
+        body.dark .hero {
+            background:
+                linear-gradient(
+                    rgba(5, 46, 22, 0.95),
+                    rgba(17, 24, 39, 0.98)
+                );
+        }
+
         .hero h1 {
-            font-size: 48px;
-            color: #14532d;
+            font-size: 50px;
+            color: var(--primary-dark);
             margin: 0 0 12px;
+        }
+
+        body.dark .hero h1 {
+            color: #86efac;
         }
 
         .hero h2 {
             font-size: 25px;
-            color: #166534;
+            color: var(--primary);
             margin: 10px 0;
         }
 
@@ -139,13 +286,13 @@
             max-width: 720px;
             margin: 20px auto;
             line-height: 1.7;
-            color: #374151;
+            color: var(--muted);
         }
 
         .hero button,
         .explore-btn,
         .hero-btn {
-            background: #15803d;
+            background: var(--primary);
             color: white;
             border: none;
             padding: 13px 25px;
@@ -159,7 +306,7 @@
         .hero button:hover,
         .explore-btn:hover,
         .hero-btn:hover {
-            background: #166534;
+            background: var(--primary-dark);
             transform: translateY(-2px);
         }
 
@@ -175,16 +322,20 @@
         }
 
         .section h2 {
-            color: #14532d;
+            color: var(--primary-dark);
             font-size: 30px;
             margin-bottom: 12px;
+        }
+
+        body.dark .section h2 {
+            color: #86efac;
         }
 
         .section > p {
             max-width: 760px;
             margin: 0 auto;
             line-height: 1.7;
-            color: #555;
+            color: var(--muted);
         }
 
         /* =========================
@@ -201,35 +352,32 @@
         }
 
         .card {
-            background: white;
+            background: var(--card);
             width: 220px;
             padding: 25px;
             border-radius: 14px;
-
-            border: 1px solid #e5e7eb;
-
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
-
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
             transition: 0.3s;
         }
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.11);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.14);
         }
 
         .card h3 {
-            color: #15803d;
+            color: var(--primary);
             margin-top: 0;
         }
 
         .card p {
             line-height: 1.6;
-            color: #444;
+            color: var(--muted);
         }
 
         .card button {
-            background: #15803d;
+            background: var(--primary);
             color: white;
             border: none;
             padding: 9px 15px;
@@ -241,10 +389,12 @@
         }
 
         .card button:hover {
-            background: #166534;
+            background: var(--primary-dark);
         }
 
-        /* AEZ hidden area */
+        /* =========================
+           AEZ
+        ========================= */
 
         #more-zones {
             display: none;
@@ -263,19 +413,83 @@
         }
 
         /* =========================
+           DROPDOWN
+        ========================= */
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-btn {
+            background: transparent;
+            color: white;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: calc(100% - 1px);
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 230px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            z-index: 3000;
+        }
+
+        .dropdown-content::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: 0;
+            right: 0;
+            height: 10px;
+        }
+
+        .dropdown-content a {
+            display: block;
+            color: var(--text);
+            text-align: left;
+            padding: 11px 15px;
+            margin: 0;
+        }
+
+        .dropdown-content a:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* =========================
            CROP DETAILS
         ========================= */
 
         #crop-info {
             width: 100%;
-            max-width: 750px;
+            max-width: 800px;
             margin: 40px auto 0;
             text-align: left;
         }
 
         #crop-info h2 {
-            color: #14532d;
+            color: var(--primary-dark);
             margin-top: 0;
+        }
+
+        body.dark #crop-info h2 {
+            color: #86efac;
         }
 
         #crop-info p {
@@ -283,7 +497,132 @@
         }
 
         /* =========================
-           ABOUT ME
+           PRODUCT DETAILS
+        ========================= */
+
+        #product-info {
+            width: 100%;
+            max-width: 800px;
+            margin: 40px auto 0;
+            text-align: left;
+            display: none;
+        }
+
+        #product-info h2 {
+            color: var(--primary-dark);
+        }
+
+        body.dark #product-info h2 {
+            color: #86efac;
+        }
+
+        .product-card {
+            cursor: pointer;
+        }
+
+        .product-icon {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        /* =========================
+           PEST CARDS (3D-style icon badges)
+        ========================= */
+
+        .pest-images {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.pest-photo {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: block;
+}
+        .pest-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+            margin-top: 32px;
+            text-align: left;
+        }
+
+        .pest-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: var(--shadow);
+            transition: 0.3s;
+        }
+
+        .pest-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.16);
+        }
+
+        .pest-card h3 {
+            color: var(--primary);
+            text-align: center;
+            margin: 0 0 4px;
+            font-size: 18px;
+        }
+
+        .pest-sci {
+            text-align: center;
+            font-style: italic;
+            color: var(--muted);
+            font-size: 12px;
+            margin: 0 0 12px;
+        }
+
+        .pest-card .pest-row {
+            margin: 8px 0;
+            font-size: 14px;
+            line-height: 1.55;
+        }
+
+        .pest-card .pest-row strong {
+            color: var(--primary-dark);
+        }
+
+        body.dark .pest-card .pest-row strong {
+            color: #86efac;
+        }
+
+        /* =========================
+           IPM SUB-SECTIONS
+        ========================= */
+
+        .ipm-sub {
+            max-width: 900px;
+            margin: 26px auto 0;
+            text-align: left;
+            padding: 22px 26px;
+        }
+
+        .ipm-sub h3 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+
+        .ipm-sub ul {
+            margin: 10px 0 0;
+            padding-left: 22px;
+            line-height: 1.7;
+        }
+
+        .ipm-sub li {
+            margin-bottom: 6px;
+        }
+
+        /* =========================
+           ABOUT
         ========================= */
 
         .about-card {
@@ -299,7 +638,6 @@
             border-radius: 50%;
             display: block;
             margin: 0 auto 20px;
-
             border: 5px solid #dcfce7;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
         }
@@ -325,19 +663,14 @@
             align-items: center;
             justify-content: center;
 
-            background: #dcfce7;
-            color: #15803d;
+            background: var(--primary-light);
+            color: var(--primary);
             border-radius: 50%;
-        }
-
-        .contact-icon svg {
-            width: 22px;
-            height: 22px;
-            fill: currentColor;
+            font-size: 23px;
         }
 
         .contact-card a {
-            color: #15803d;
+            color: var(--primary);
             text-decoration: none;
             font-weight: 600;
         }
@@ -351,7 +684,7 @@
         ========================= */
 
         footer {
-            background: #14532d;
+            background: var(--footer);
             color: white;
             text-align: center;
             padding: 30px 20px;
@@ -369,16 +702,17 @@
         @media (max-width: 768px) {
 
             nav {
-                padding: 12px 10px;
+                padding: 12px 8px;
             }
 
-            nav a {
+            nav a,
+            .dropdown-btn {
                 font-size: 12px;
-                margin: 4px 5px;
+                margin: 3px 4px;
             }
 
             .hero {
-                padding: 80px 18px 65px;
+                padding: 90px 18px 65px;
             }
 
             .hero h1 {
@@ -404,16 +738,19 @@
             #date-widget {
                 top: 65px;
                 right: 10px;
-                min-width: 190px;
+                min-width: 185px;
                 padding: 10px 12px;
             }
 
-            .english-date {
-                font-size: 13px;
+            .top-controls {
+                top: 65px;
+                left: 10px;
             }
 
-            .bangla-date {
-                font-size: 12px;
+            #settings-panel {
+                top: 115px;
+                left: 10px;
+                width: 280px;
             }
         }
 
@@ -429,13 +766,128 @@
             }
 
             #date-widget {
-                min-width: 175px;
+                min-width: 170px;
+            }
+
+            .top-controls {
+                transform: scale(0.9);
+                transform-origin: left top;
             }
         }
     </style>
 </head>
 
 <body>
+
+    <!-- =========================
+         TOP CONTROLS
+    ========================== -->
+
+    <div class="top-controls">
+
+        <select id="language-select" onchange="changeLanguage(this.value)">
+            <option value="en">English</option>
+            <option value="bn">বাংলা</option>
+        </select>
+
+        <button class="control-btn" onclick="toggleDarkMode()" id="theme-button">
+            🌙
+        </button>
+
+        <button class="control-btn" onclick="toggleSettings()">
+            ⚙️
+        </button>
+
+    </div>
+
+
+    <!-- =========================
+         SETTINGS PANEL
+    ========================== -->
+
+    <div id="settings-panel">
+
+        <button class="settings-close" onclick="toggleSettings()">×</button>
+
+        <div class="settings-title" data-i18n="settingsTitle">
+            ⚙️ Settings
+        </div>
+
+        <div class="setting-row">
+
+            <label data-i18n="settingsLanguageLabel">
+                Language
+            </label>
+
+            <select onchange="changeLanguage(this.value)" id="settings-language">
+
+                <option value="en">
+                    English
+                </option>
+
+                <option value="bn">
+                    বাংলা
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="setting-row">
+
+            <label data-i18n="settingsThemeLabel">
+                Theme
+            </label>
+
+            <select onchange="setTheme(this.value)" id="theme-select">
+
+                <option value="light" data-i18n="themeLight">
+                    ☀️ Light Mode
+                </option>
+
+                <option value="dark" data-i18n="themeDark">
+                    🌙 Dark Mode
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="setting-row">
+
+            <label data-i18n="settingsFontLabel">
+                Text Size
+            </label>
+
+            <select onchange="changeFontSize(this.value)" id="font-size-select">
+
+                <option value="normal" data-i18n="fontNormal">
+                    Normal
+                </option>
+
+                <option value="large" data-i18n="fontLarge">
+                    Large
+                </option>
+
+                <option value="extra" data-i18n="fontExtra">
+                    Extra Large
+                </option>
+
+            </select>
+
+        </div>
+
+        <button
+            class="hero-btn"
+            style="width:100%;"
+            onclick="resetSettings()"
+            data-i18n="settingsReset"
+        >
+            Reset Settings
+        </button>
+
+    </div>
+
 
     <!-- =========================
          MOVABLE DATE WIDGET
@@ -468,23 +920,122 @@
 
     <nav>
 
-        <a href="#home">Home</a>
+        <a href="#home" data-i18n="navHome">
+            Home
+        </a>
 
-        <a href="#agro-zones">Agro Zones</a>
+        <a href="#crops" data-i18n="navCrops">
+            Crops
+        </a>
 
-        <a href="#crops">Crops</a>
+ <div class="dropdown">
 
-        <a href="#pest-disease">Pest & Disease</a>
+    <button class="dropdown-btn" data-i18n="navPest">
+        Pest & Disease ▾
+    </button>
 
-        <a href="#ipm">IPM</a>
+    <div class="dropdown-content">
 
-        <a href="#products">Products</a>
+      <a href="#pest-disease">
+    🐛 Pest
+</a>
 
-        <a href="#farmer-help">Farmer Help</a>
+        <a href="#disease">
+            🦠 Disease
+        </a>
 
-        <a href="#about">About Me</a>
+        <a href="#ipm" data-i18n="navIpmWhat">
+            🛡️ What is IPM?
+        </a>
 
-        <a href="#contact">Contact</a>
+        <a href="#ipm-steps" data-i18n="navIpmSteps">
+            📋 Five Main Steps
+        </a>
+
+        <a href="#ipm-cultural" data-i18n="navIpmCultural">
+            🌾 Cultural Control
+        </a>
+
+        <a href="#ipm-biological" data-i18n="navIpmBiological">
+            🐞 Biological Control
+        </a>
+
+        <a href="#ipm-mechanical" data-i18n="navIpmMechanical">
+            🖐️ Mechanical &amp; Physical Control
+        </a>
+
+        <a href="#ipm-botanical" data-i18n="navIpmBotanical">
+            🌿 Botanical / Biopesticide
+        </a>
+
+        <a href="#ipm-chemical" data-i18n="navIpmChemical">
+            🧪 Chemical Control
+        </a>
+
+    </div>
+
+</div>
+        </div>
+
+        <div class="dropdown">
+
+            <button class="dropdown-btn" data-i18n="navProducts">
+                Products ▾
+            </button>
+
+            <div class="dropdown-content">
+
+                <a href="#products" onclick="showProduct('fruits')" data-i18n="prodFruits">
+                    🍎 Fruits & Vegetables
+                </a>
+
+                <a href="#products" onclick="showProduct('biopesticides')" data-i18n="prodBio">
+                    🦠 Bio Pesticides
+                </a>
+
+                <a href="#products" onclick="showProduct('medicines')" data-i18n="prodMed">
+                    💊 Agricultural Medicines
+                </a>
+
+                <a href="#products" onclick="showProduct('seeds')" data-i18n="prodSeeds">
+                    🌱 Seeds
+                </a>
+
+                <a href="#products" onclick="showProduct('seedlings')" data-i18n="prodSeedlings">
+                    🌿 Seedlings & Plants
+                </a>
+
+                <a href="#products" onclick="showProduct('tissue')" data-i18n="prodTissue">
+                    🧪 Tissue Culture & MS Media
+                </a>
+
+                <a href="#products" onclick="showProduct('indoor')" data-i18n="prodIndoor">
+                    🪴 Indoor Plants
+                </a>
+
+                <a href="#products" onclick="showProduct('organic')" data-i18n="prodOrganic">
+                    ♻️ Organic Fertilizers
+                </a>
+
+                <a href="#products" onclick="showProduct('nutrients')" data-i18n="prodNutrients">
+                    🧬 Plant Nutrients
+                </a>
+
+            </div>
+
+        </div>
+
+        <a href="#farmer-help" data-i18n="navFarmerHelp">
+            Farmer Help
+        </a>
+
+        <a href="#about" data-i18n="navAbout">
+            About Me
+        </a>
+
+        <a href="#contact" data-i18n="navContact">
+            Contact
+        </a>
 
     </nav>
 
@@ -495,16 +1046,24 @@
 
     <section class="hero" id="home">
 
-        <h1>🌱 Agri Solution BD</h1>
+        <h1>
+            🌱 Zee Agri
+        </h1>
 
-        <h2>Agriculture Information, Products & Solutions</h2>
+        <h2 id="hero-title">
+            Agriculture Information, Products & Solutions
+        </h2>
 
-        <p>
-            An all-in-one agriculture platform for farmers,
-            growers, students and agriculture enthusiasts.
+        <p id="hero-description">
+            An agriculture platform for farmers, growers,
+            students and agriculture enthusiasts.
         </p>
 
-        <button class="hero-btn" onclick="document.getElementById('agro-zones').scrollIntoView({behavior:'smooth'})">
+        <button
+            class="hero-btn"
+            onclick="document.getElementById('agro-zones').scrollIntoView({behavior:'smooth'})"
+            id="hero-button"
+        >
             Explore Agriculture
         </button>
 
@@ -512,18 +1071,39 @@
 
 
     <!-- =========================
-         AGRO-ECOLOGICAL ZONES
+         AEZ
     ========================== -->
 
     <section class="section" id="agro-zones">
 
-        <h2>🗺️ Bangladesh Agro-Ecological Zones</h2>
+        <h2 data-i18n="aezHeading">
+            🗺️ Bangladesh Agro-Ecological Zones
+        </h2>
 
-        <p>
+        <p id="aez-description">
             Explore the 30 Agro-Ecological Zones of Bangladesh
             and learn about their soil, climate and agricultural characteristics.
         </p>
 
+        <div class="card" style="max-width:900px; margin:25px auto; text-align:left;">
+            <h3 data-i18n="aezInfoTitle">📚 AEZ Information</h3>
+            <p data-i18n="aezInfoP1">
+                Bangladesh has <strong>30 Agro-Ecological Zones (AEZs)</strong>,
+                divided into <strong>88 sub-regions</strong> and <strong>535 agro-ecological units</strong>.
+                AEZ classification considers factors such as physiography, soil characteristics,
+                land type/flooding and agro-climatology.
+            </p>
+            <p data-i18n="aezInfoP2">
+                The information on this page is based on official sources from the
+                <strong>Bangladesh Agricultural Research Council (BARC)</strong> and
+                <strong>Bangladesh Agro-Meteorological Information Service (BAMIS)</strong>.
+            </p>
+            <p style="margin-bottom:0;">
+                🗺️ <a href="https://apps.barc.gov.bd/maps/LRI-Map%20Products-Bangladesh.pdf" target="_blank" rel="noopener noreferrer" data-i18n="aezLink1">View Official BARC AEZ Map (PDF)</a>
+                &nbsp; | &nbsp;
+                🌦️ <a href="https://www.bamis.gov.bd/en/page/aezs-maps/" target="_blank" rel="noopener noreferrer" data-i18n="aezLink2">View BAMIS AEZ Information</a>
+            </p>
+        </div>
 
         <div class="cards">
 
@@ -550,150 +1130,46 @@
         </div>
 
 
-        <!-- AEZ 5-30 -->
+        <p style="margin-top:20px; color:var(--muted);" data-i18n="aezShownNote">
+            The first four zones are shown above; use <strong>Explore More</strong> to view all 30 AEZs.
+        </p>
 
         <div id="more-zones">
 
-            <div class="card">
-                <h3>AEZ 5</h3>
-                <p>Lower Atrai Basin</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 6</h3>
-                <p>Lower Purnabhaba Floodplain</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 7</h3>
-                <p>Active Brahmaputra-Jamuna Floodplain</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 8</h3>
-                <p>Young Brahmaputra-Jamuna Floodplain</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 9</h3>
-                <p>Old Brahmaputra Floodplain</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 10</h3>
-                <p>Active Ganges Floodplain</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 11</h3>
-                <p>High Ganges River Floodplain</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 12</h3>
-                <p>Low Ganges River Floodplain</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 13</h3>
-                <p>Ganges Tidal Floodplain</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 14</h3>
-                <p>Gopalganj-Khulna Bils</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 15</h3>
-                <p>Arial Bil</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 16</h3>
-                <p>Middle Meghna River Floodplain</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 17</h3>
-                <p>Lower Meghna River Floodplain</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 18</h3>
-                <p>Young Meghna Estuarine Floodplain</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 19</h3>
-                <p>Old Meghna Estuarine Floodplain</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 20</h3>
-                <p>Eastern Surma-Kushiyara Floodplain</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 21</h3>
-                <p>Sylhet Basin</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 22</h3>
-                <p>Northern and Eastern Piedmont Plain</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 23</h3>
-                <p>Chittagong Coastal Plain</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 24</h3>
-                <p>St. Martin's Coral Island</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 25</h3>
-                <p>Level Barind Tract</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 26</h3>
-                <p>High Barind Tract</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 27</h3>
-                <p>North-Eastern Barind Tract</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 28</h3>
-                <p>Madhupur Tract</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 29</h3>
-                <p>Northern and Eastern Hills</p>
-            </div>
-
-            <div class="card">
-                <h3>AEZ 30</h3>
-                <p>Akhaura Terrace</p>
-            </div>
+            <div class="card"><h3>AEZ 5</h3><p>Lower Atrai Basin</p></div>
+            <div class="card"><h3>AEZ 6</h3><p>Lower Purnabhaba Floodplain</p></div>
+            <div class="card"><h3>AEZ 7</h3><p>Active Brahmaputra-Jamuna Floodplain</p></div>
+            <div class="card"><h3>AEZ 8</h3><p>Young Brahmaputra-Jamuna Floodplain</p></div>
+            <div class="card"><h3>AEZ 9</h3><p>Old Brahmaputra Floodplain</p></div>
+            <div class="card"><h3>AEZ 10</h3><p>Active Ganges Floodplain</p></div>
+            <div class="card"><h3>AEZ 11</h3><p>High Ganges River Floodplain</p></div>
+            <div class="card"><h3>AEZ 12</h3><p>Low Ganges River Floodplain</p></div>
+            <div class="card"><h3>AEZ 13</h3><p>Ganges Tidal Floodplain</p></div>
+            <div class="card"><h3>AEZ 14</h3><p>Gopalganj-Khulna Bils</p></div>
+            <div class="card"><h3>AEZ 15</h3><p>Arial Bil</p></div>
+            <div class="card"><h3>AEZ 16</h3><p>Middle Meghna River Floodplain</p></div>
+            <div class="card"><h3>AEZ 17</h3><p>Lower Meghna River Floodplain</p></div>
+            <div class="card"><h3>AEZ 18</h3><p>Young Meghna Estuarine Floodplain</p></div>
+            <div class="card"><h3>AEZ 19</h3><p>Old Meghna Estuarine Floodplain</p></div>
+            <div class="card"><h3>AEZ 20</h3><p>Eastern Surma-Kushiyara Floodplain</p></div>
+            <div class="card"><h3>AEZ 21</h3><p>Sylhet Basin</p></div>
+            <div class="card"><h3>AEZ 22</h3><p>Northern and Eastern Piedmont Plain</p></div>
+            <div class="card"><h3>AEZ 23</h3><p>Chittagong Coastal Plain</p></div>
+            <div class="card"><h3>AEZ 24</h3><p>St. Martin's Coral Island</p></div>
+            <div class="card"><h3>AEZ 25</h3><p>Level Barind Tract</p></div>
+            <div class="card"><h3>AEZ 26</h3><p>High Barind Tract</p></div>
+            <div class="card"><h3>AEZ 27</h3><p>North-Eastern Barind Tract</p></div>
+            <div class="card"><h3>AEZ 28</h3><p>Madhupur Tract</p></div>
+            <div class="card"><h3>AEZ 29</h3><p>Northern and Eastern Hills</p></div>
+            <div class="card"><h3>AEZ 30</h3><p>Akhaura Terrace</p></div>
 
         </div>
-
 
         <button
             id="explore-zones-btn"
             class="explore-btn"
-            onclick="
-                document.getElementById('more-zones').style.display='grid';
-                this.style.display='none';
-            "
+            onclick="document.getElementById('more-zones').style.display='grid'; this.style.display='none';"
+            data-i18n="aezExploreBtn"
         >
             Explore More
         </button>
@@ -702,142 +1178,292 @@
 
 
     <!-- =========================
-         AGRICULTURE SOLUTIONS
+         CROPS
     ========================== -->
 
     <section class="section" id="crops">
 
-        <h2>🌱 Our Agriculture Solutions</h2>
+        <h2 data-i18n="cropsHeading">
+            🌱 Crop Information
+        </h2>
 
-        <p>
-            Explore useful agricultural information,
-            crop management and sustainable farming solutions.
+        <p data-i18n="cropsDesc">
+            Explore crop varieties, cultivation,
+            pests, diseases and management information.
+        </p>
+
+        <div class="cards">
+
+            <div class="card" onclick="showCrop('rice')">
+                <h3>🌾 Rice</h3>
+                <p>ধান</p>
+                <button data-i18n="cropViewBtn">View Details</button>
+            </div>
+
+            <div class="card" onclick="showCrop('wheat')">
+                <h3>🌾 Wheat</h3>
+                <p>গম</p>
+                <button data-i18n="cropViewBtn">View Details</button>
+            </div>
+
+            <div class="card" onclick="showCrop('maize')">
+                <h3>🌽 Maize</h3>
+                <p>ভুট্টা</p>
+                <button data-i18n="cropViewBtn">View Details</button>
+            </div>
+
+            <div class="card" onclick="showCrop('chili')">
+                <h3>🌶️ Chili</h3>
+                <p>মরিচ</p>
+                <button data-i18n="cropViewBtn">View Details</button>
+            </div>
+
+            <div class="card" onclick="showCrop('tomato')">
+                <h3>🍅 Tomato</h3>
+                <p>টমেটো</p>
+                <button data-i18n="cropViewBtn">View Details</button>
+            </div>
+
+        </div>
+
+
+        <div id="crop-info" class="card">
+
+            <h2 data-i18n="cropDefaultTitle">
+                🌱 Select a Crop
+            </h2>
+
+            <p data-i18n="cropDefaultText">
+                Click a crop to view its information.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         PEST & DISEASE
+    ========================== -->
+
+    <section class="section" id="pest-disease">
+
+        <h2 data-i18n="pestHeading">
+            🐛 Pest & Disease
+        </h2>
+
+        <p data-i18n="pestDesc">
+            Identify agricultural pests and diseases
+            and learn about proper crop management.
+        </p>
+
+        <div class="pest-cards" id="pest-cards-container"></div>
+
+    </section>
+
+    <!-- =========================
+         IPM
+    ========================== -->
+
+    <section class="section" id="ipm">
+
+        <h2 data-i18n="ipmHeading">
+            🛡️ Integrated Pest Management
+        </h2>
+
+        <p data-i18n="ipmDesc">
+            Learn Integrated Pest Management (IPM)
+            and sustainable crop protection methods.
+        </p>
+
+        <div class="cards">
+
+            <div class="card">
+                <h3 data-i18n="ipmCard1Title">🌱 Prevention</h3>
+                <p data-i18n="ipmCard1Text">
+                    Use healthy planting materials,
+                    proper field sanitation and good cultivation practices.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3 data-i18n="ipmCard2Title">🐞 Biological Control</h3>
+                <p data-i18n="ipmCard2Text">
+                    Encourage beneficial organisms
+                    and natural enemies of pests.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3 data-i18n="ipmCard3Title">🧪 Safe Chemical Use</h3>
+                <p data-i18n="ipmCard3Text">
+                    Use pesticides responsibly and only
+                    when necessary according to proper recommendations.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- IPM Sub-topic: Five Main Steps -->
+        <div class="card ipm-sub" id="ipm-steps">
+            <h3 data-i18n="ipmStepsTitle">📋 Five Main Steps of IPM</h3>
+            <p data-i18n="ipmStepsIntro">A working IPM plan is usually built around five repeating steps that guide a farmer from spotting a problem to solving it with minimum risk.</p>
+            <ul>
+                <li data-i18n="ipmStep1">1. Monitor &amp; Identify — regularly inspect the field and correctly identify the pest, since control decisions depend on knowing exactly what is causing the damage.</li>
+                <li data-i18n="ipmStep2">2. Set an Action Threshold — decide the pest level at which action actually becomes worthwhile; not every pest sighting needs treatment.</li>
+                <li data-i18n="ipmStep3">3. Prevention — the first line of defence: resistant varieties, crop rotation, timely sowing and field sanitation to stop pests before they start.</li>
+                <li data-i18n="ipmStep4">4. Choose a Control Method — combine cultural, mechanical, biological and, if truly needed, chemical methods, starting with the least risky option.</li>
+                <li data-i18n="ipmStep5">5. Evaluate — check whether the action worked and feed that result back into the next round of monitoring.</li>
+            </ul>
+        </div>
+
+        <!-- IPM Sub-topic: Cultural Control -->
+        <div class="card ipm-sub" id="ipm-cultural">
+            <h3 data-i18n="ipmCulturalTitle">🌾 Cultural Control</h3>
+            <p data-i18n="ipmCulturalText">Cultural control means adjusting normal farming practices so the field becomes a less comfortable place for pests to begin with. It is largely preventive and one of the cheapest tools available.</p>
+            <ul>
+                <li data-i18n="ipmCulturalL1">Crop rotation and intercropping to break a pest's life cycle</li>
+                <li data-i18n="ipmCulturalL2">Choosing resistant or tolerant varieties suited to the local area</li>
+                <li data-i18n="ipmCulturalL3">Timely sowing/transplanting so the crop avoids the pest's peak season</li>
+                <li data-i18n="ipmCulturalL4">Balanced fertilizer and irrigation, since over-fertilized or waterlogged fields attract more pests and disease</li>
+                <li data-i18n="ipmCulturalL5">Removing and destroying infected plant residue after harvest</li>
+            </ul>
+        </div>
+
+        <!-- IPM Sub-topic: Biological Control -->
+        <div class="card ipm-sub" id="ipm-biological">
+            <h3 data-i18n="ipmBiologicalTitle">🐞 Biological Control</h3>
+            <p data-i18n="ipmBiologicalText">Biological control uses a pest's own natural enemies — predators, parasitoids and disease-causing microorganisms — to keep its numbers down without chemicals.</p>
+            <ul>
+                <li data-i18n="ipmBiologicalL1">Predators such as ladybird beetles, spiders and dragonflies that feed directly on pest insects</li>
+                <li data-i18n="ipmBiologicalL2">Parasitoid wasps that lay eggs inside pest larvae and destroy them from within</li>
+                <li data-i18n="ipmBiologicalL3">Microbial agents like Bacillus thuringiensis (Bt), used against caterpillar pests including stem borer and leaf folder</li>
+                <li data-i18n="ipmBiologicalL4">Protecting these natural enemies by avoiding broad-spectrum pesticide sprays whenever possible</li>
+            </ul>
+        </div>
+
+        <!-- IPM Sub-topic: Mechanical & Physical Control -->
+        <div class="card ipm-sub" id="ipm-mechanical">
+            <h3 data-i18n="ipmMechanicalTitle">🖐️ Mechanical &amp; Physical Control</h3>
+            <p data-i18n="ipmMechanicalText">Mechanical and physical methods remove or block pests directly, usually once numbers have already crossed a noticeable level.</p>
+            <ul>
+                <li data-i18n="ipmMechanicalL1">Hand-picking and destroying egg masses or caterpillars</li>
+                <li data-i18n="ipmMechanicalL2">Light traps and pheromone traps to catch and monitor adult moths</li>
+                <li data-i18n="ipmMechanicalL3">Yellow sticky traps for whiteflies, aphids and other sap-sucking insects</li>
+                <li data-i18n="ipmMechanicalL4">Physical barriers or nets to keep flying pests away from seedbeds</li>
+            </ul>
+        </div>
+
+        <!-- IPM Sub-topic: Botanical / Biopesticide -->
+        <div class="card ipm-sub" id="ipm-botanical">
+            <h3 data-i18n="ipmBotanicalTitle">🌿 Botanical / Biopesticide</h3>
+            <p data-i18n="ipmBotanicalText">Botanical pesticides are made from plant extracts that carry natural pest-repelling or pest-killing compounds, offering a middle ground between cultural methods and synthetic chemicals.</p>
+            <ul>
+                <li data-i18n="ipmBotanicalL1">Neem-based extracts, one of the most widely used botanical pesticides against a broad range of insects</li>
+                <li data-i18n="ipmBotanicalL2">Biopesticides derived from bacteria, fungi or viruses that specifically target certain pests</li>
+                <li data-i18n="ipmBotanicalL3">Generally lower toxicity to humans and beneficial insects compared with synthetic chemical sprays</li>
+                <li data-i18n="ipmBotanicalL4">Best used as part of a rotation, not as the sole control method, to avoid pests building tolerance</li>
+            </ul>
+        </div>
+
+        <!-- IPM Sub-topic: Chemical Control -->
+        <div class="card ipm-sub" id="ipm-chemical">
+            <h3 data-i18n="ipmChemicalTitle">🧪 Chemical Control</h3>
+            <p data-i18n="ipmChemicalText">Chemical control is kept as the last resort in IPM — used only when monitoring shows the pest has crossed the action threshold and other methods aren't enough on their own.</p>
+            <ul>
+                <li data-i18n="ipmChemicalL1">Select a pesticide registered for the specific crop and pest, and follow the recommended dose exactly</li>
+                <li data-i18n="ipmChemicalL2">Prefer targeted, selective products over broad-spectrum sprays to spare beneficial insects</li>
+                <li data-i18n="ipmChemicalL3">Rotate chemical groups so the pest does not build up resistance over successive seasons</li>
+                <li data-i18n="ipmChemicalL4">Always follow label safety instructions and pre-harvest interval before selling or eating the produce</li>
+            </ul>
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         PRODUCTS
+    ========================== -->
+
+    <section class="section" id="products">
+
+        <h2 data-i18n="productsHeading">
+            🛒 Agriculture Products
+        </h2>
+
+        <p data-i18n="productsDesc">
+            Explore agricultural products and inputs
+            that may be useful for growers and farmers.
         </p>
 
 
         <div class="cards">
 
-            <div class="card" onclick="showCrop('rice')">
-
-                <h3>🌾 Crop Information</h3>
-
-                <p>
-                    Explore crop varieties, cultivation,
-                    pests, diseases and management.
-                </p>
-
-                <button>Explore Crops</button>
-
+            <div class="card product-card" onclick="showProduct('fruits')">
+                <div class="product-icon">🍎</div>
+                <h3 data-i18n="prodCardFruitsTitle">Fruits & Vegetables</h3>
+                <p data-i18n="prodCardFruitsShort">Fresh agricultural produce.</p>
             </div>
 
-
-            <div class="card" id="pest-disease">
-
-                <h3>🐛 Pest & Disease</h3>
-
-                <p>
-                    Identify agricultural pests and
-                    diseases with proper management.
-                </p>
-
+            <div class="card product-card" onclick="showProduct('biopesticides')">
+                <div class="product-icon">🦠</div>
+                <h3 data-i18n="prodCardBioTitle">Bio Pesticides</h3>
+                <p data-i18n="prodCardBioShort">Biological crop protection inputs.</p>
             </div>
 
-
-            <div class="card" id="ipm">
-
-                <h3>🛡️ IPM</h3>
-
-                <p>
-                    Learn Integrated Pest Management
-                    and sustainable crop protection.
-                </p>
-
+            <div class="card product-card" onclick="showProduct('medicines')">
+                <div class="product-icon">💊</div>
+                <h3 data-i18n="prodCardMedTitle">Agricultural Medicines</h3>
+                <p data-i18n="prodCardMedShort">Crop protection products.</p>
             </div>
 
-
-            <div class="card" id="products">
-
-                <h3>🛒 Agriculture Products</h3>
-
-                <p>
-                    Seeds, fertilizers, plants,
-                    bio-inputs and agricultural products.
-                </p>
-
+            <div class="card product-card" onclick="showProduct('seeds')">
+                <div class="product-icon">🌱</div>
+                <h3 data-i18n="prodCardSeedsTitle">Seeds</h3>
+                <p data-i18n="prodCardSeedsShort">Quality crop seeds.</p>
             </div>
 
-        </div>
-
-
-        <!-- CROP SELECTION -->
-
-        <div class="cards">
-
-            <div class="card" onclick="showCrop('rice')">
-
-                <h3>🌾 Rice</h3>
-
-                <p>ধান</p>
-
-                <button>View Details</button>
-
+            <div class="card product-card" onclick="showProduct('seedlings')">
+                <div class="product-icon">🌿</div>
+                <h3 data-i18n="prodCardSeedlingsTitle">Seedlings & Plants</h3>
+                <p data-i18n="prodCardSeedlingsShort">Quality seedlings and plants.</p>
             </div>
 
-
-            <div class="card" onclick="showCrop('wheat')">
-
-                <h3>🌾 Wheat</h3>
-
-                <p>গম</p>
-
-                <button>View Details</button>
-
+            <div class="card product-card" onclick="showProduct('tissue')">
+                <div class="product-icon">🧪</div>
+                <h3 data-i18n="prodCardTissueTitle">Tissue Culture & MS Media</h3>
+                <p data-i18n="prodCardTissueShort">Tissue culture related materials.</p>
             </div>
 
-
-            <div class="card" onclick="showCrop('maize')">
-
-                <h3>🌽 Maize</h3>
-
-                <p>ভুট্টা</p>
-
-                <button>View Details</button>
-
+            <div class="card product-card" onclick="showProduct('indoor')">
+                <div class="product-icon">🪴</div>
+                <h3 data-i18n="prodCardIndoorTitle">Indoor Plants</h3>
+                <p data-i18n="prodCardIndoorShort">Plants for indoor spaces.</p>
             </div>
 
-
-            <div class="card" onclick="showCrop('chili')">
-
-                <h3>🌶️ Chili</h3>
-
-                <p>মরিচ</p>
-
-                <button>View Details</button>
-
+            <div class="card product-card" onclick="showProduct('organic')">
+                <div class="product-icon">♻️</div>
+                <h3 data-i18n="prodCardOrganicTitle">Organic Fertilizers</h3>
+                <p data-i18n="prodCardOrganicShort">Organic soil amendments.</p>
             </div>
 
-
-            <div class="card" onclick="showCrop('tomato')">
-
-                <h3>🍅 Tomato</h3>
-
-                <p>টমেটো</p>
-
-                <button>View Details</button>
-
+            <div class="card product-card" onclick="showProduct('nutrients')">
+                <div class="product-icon">🧬</div>
+                <h3 data-i18n="prodCardNutrientsTitle">Plant Nutrients</h3>
+                <p data-i18n="prodCardNutrientsShort">Plant nutrition products.</p>
             </div>
 
         </div>
 
 
-        <!-- CROP DETAILS -->
+        <div id="product-info" class="card">
 
-        <div id="crop-info" class="card">
+            <h2 data-i18n="productDefaultTitle">
+                🛒 Select a Product Category
+            </h2>
 
-            <h2>🌱 Select a Crop</h2>
-
-            <p>
-                Click a crop to view its information.
+            <p data-i18n="productDefaultText">
+                Click a product category to view information.
             </p>
 
         </div>
@@ -851,9 +1477,11 @@
 
     <section class="section" id="farmer-help">
 
-        <h2>👨‍🌾 Farmer Help</h2>
+        <h2 data-i18n="farmerHeading">
+            👨‍🌾 Farmer Help
+        </h2>
 
-        <p>
+        <p data-i18n="farmerDesc">
             Get practical agricultural information
             and solutions for better farming.
         </p>
@@ -863,6 +1491,7 @@
         <button
             class="hero-btn"
             onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})"
+            data-i18n="farmerBtn"
         >
             Get Agriculture Help
         </button>
@@ -876,8 +1505,9 @@
 
     <section class="section" id="about">
 
-        <h2>👨‍🌾 About Me</h2>
-
+        <h2 data-i18n="aboutHeading">
+            👨‍🌾 About Me
+        </h2>
 
         <div class="card about-card">
 
@@ -887,24 +1517,23 @@
                 class="about-photo"
             >
 
+            <h3>
+                Sayed Zishan Ahmed
+            </h3>
 
-            <h3>Sayed Zishan Ahmed</h3>
-
-
-            <p>
+            <p data-i18n="aboutDegree">
                 Diploma in Agriculture
             </p>
 
-
-            <p>
+            <p data-i18n="aboutInstitute">
                 Agriculture Training Institute, Hathazari
             </p>
 
-
-            <p>
+            <p data-i18n="aboutDesc">
                 Interested in agriculture, crop production,
-                pest and disease identification, Integrated
-                Pest Management (IPM) and modern agricultural technologies.
+                pest and disease identification,
+                Integrated Pest Management (IPM)
+                and modern agricultural technologies.
             </p>
 
         </div>
@@ -918,30 +1547,27 @@
 
     <section class="section" id="contact">
 
-        <h2>📞 Contact Me</h2>
+        <h2 data-i18n="contactHeading">
+            📞 Contact Me
+        </h2>
 
-        <p>
-            For agricultural information, suggestions or
-            project-related communication, feel free to contact me.
+        <p data-i18n="contactDesc">
+            For agricultural information, suggestions
+            or project-related communication, feel free to contact me.
         </p>
 
 
         <div class="cards">
 
-
-            <!-- EMAIL -->
-
             <div class="card contact-card">
 
                 <div class="contact-icon">
-
-                    <svg viewBox="0 0 24 24">
-                        <path d="M2 5.5A2.5 2.5 0 0 1 4.5 3h15A2.5 2.5 0 0 1 22 5.5v13a2.5 2.5 0 0 1-2.5 2.5h-15A2.5 2.5 0 0 1 2 18.5v-13ZM4.5 5a.5.5 0 0 0-.5.5v.3l8 5.2 8-5.2v-.3a.5.5 0 0 0-.5-.5h-15ZM20 8.2l-7.45 4.84a1 1 0 0 1-1.1 0L4 8.2v10.3a.5.5 0 0 0 .5.5h15a.5.5 0 0 0 .5-.5V8.2Z"/>
-                    </svg>
-
+                    ✉️
                 </div>
 
-                <h3>Email</h3>
+                <h3 data-i18n="contactEmailLabel">
+                    Email
+                </h3>
 
                 <p>
                     <a href="mailto:szishanahmed0@gmail.com">
@@ -952,19 +1578,15 @@
             </div>
 
 
-            <!-- PHONE -->
-
             <div class="card contact-card">
 
                 <div class="contact-icon">
-
-                    <svg viewBox="0 0 24 24">
-                        <path d="M6.6 2.5a2 2 0 0 1 2.1 1.2l1.3 3a2 2 0 0 1-.45 2.2L8.2 10.2a15.5 15.5 0 0 0 5.6 5.6l1.3-1.35a2 2 0 0 1 2.2-.45l3 1.3a2 2 0 0 1 1.2 2.1l-.2 2.1a2 2 0 0 1-2 1.8C10.8 21.3 2.7 13.2 2.7 3.9a2 2 0 0 1 1.8-2l2.1-.2Z"/>
-                    </svg>
-
+                    📞
                 </div>
 
-                <h3>Phone</h3>
+                <h3 data-i18n="contactPhoneLabel">
+                    Phone
+                </h3>
 
                 <p>
                     <a href="tel:+8801305981300">
@@ -975,53 +1597,30 @@
             </div>
 
 
-            <!-- FACEBOOK -->
-
             <div class="card contact-card">
 
                 <div class="contact-icon">
-
-                    <svg viewBox="0 0 24 24">
-                        <path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.87.24-1.46 1.5-1.46h1.7V4c-.3-.04-1.32-.13-2.52-.13-2.5 0-4.22 1.53-4.22 4.34V10H7.2v3h2.76v8h3.54Z"/>
-                    </svg>
-
+                    f
                 </div>
 
-                <h3>Facebook</h3>
+                <h3 data-i18n="contactFbLabel">
+                    Facebook
+                </h3>
 
                 <p>
+
                     <a
                         href="https://www.facebook.com/s.zishan.ahmed"
                         target="_blank"
                         rel="noopener noreferrer"
+                        data-i18n="contactFbLinkText"
                     >
                         Visit My Facebook Profile
                     </a>
+
                 </p>
 
             </div>
-
-
-            <!-- LOCATION -->
-
-            <div class="card contact-card">
-
-                <div class="contact-icon">
-
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 2.5a7 7 0 0 0-7 7c0 5.1 7 12 7 12s7-6.9 7-12a7 7 0 0 0-7-7Zm0 9.4a2.4 2.4 0 1 1 0-4.8 2.4 2.4 0 0 1 0 4.8Z"/>
-                    </svg>
-
-                </div>
-
-                <h3>Location</h3>
-
-                <p>
-                    Chattogram, Bangladesh
-                </p>
-
-            </div>
-
 
         </div>
 
@@ -1035,11 +1634,15 @@
     <footer>
 
         <p>
-            © 2026 Agri Solution BD
+            🌱 <strong>Zee Agri</strong>
         </p>
 
-        <p>
-            Information • Products • Services • Solutions
+        <p data-i18n="footerTagline">
+            Agriculture Information, Products & Solutions
+        </p>
+
+        <p data-i18n="footerCopyright">
+            © 2026 Zee Agri. All rights reserved.
         </p>
 
     </footer>
@@ -1051,515 +1654,861 @@
 
     <script>
 
-        /* ==========================================
-           BANGLA DATE
-           Bangladesh Revised Bengali Calendar
-        ========================================== */
+        /* =========================
+           LANGUAGE DATA
+           (Every visible text on the page now has an
+           English + Bangla entry here.)
+        ========================== */
 
-        function getBanglaDate(date) {
+        const translations = {
 
-            const banglaMonths = [
-                "বৈশাখ",
-                "জ্যৈষ্ঠ",
-                "আষাঢ়",
-                "শ্রাবণ",
-                "ভাদ্র",
-                "আশ্বিন",
-                "কার্তিক",
-                "অগ্রহায়ণ",
-                "পৌষ",
-                "মাঘ",
-                "ফাল্গুন",
-                "চৈত্র"
-            ];
+            en: {
+                pageTitle: "Zee Agri | Agriculture Information & Solutions",
+
+                settingsTitle: "⚙️ Settings",
+                settingsLanguageLabel: "Language",
+                settingsThemeLabel: "Theme",
+                themeLight: "☀️ Light Mode",
+                themeDark: "🌙 Dark Mode",
+                settingsFontLabel: "Text Size",
+                fontNormal: "Normal",
+                fontLarge: "Large",
+                fontExtra: "Extra Large",
+                settingsReset: "Reset Settings",
+
+                navHome: "Home",
+                navAgroZones: "Agro Zones",
+                navCrops: "Crops",
+                navPest: "Pest & Disease",
+                navIpm: "IPM ▾",
+                navIpmWhat: "🛡️ What is IPM?",
+                navIpmSteps: "📋 Five Main Steps",
+                navIpmCultural: "🌾 Cultural Control",
+                navIpmBiological: "🐞 Biological Control",
+                navIpmMechanical: "🖐️ Mechanical & Physical Control",
+                navIpmBotanical: "🌿 Botanical / Biopesticide",
+                navIpmChemical: "🧪 Chemical Control",
+                navProducts: "Products ▾",
+                prodFruits: "🍎 Fruits & Vegetables",
+                prodBio: "🦠 Bio Pesticides",
+                prodMed: "💊 Agricultural Medicines",
+                prodSeeds: "🌱 Seeds",
+                prodSeedlings: "🌿 Seedlings & Plants",
+                prodTissue: "🧪 Tissue Culture & MS Media",
+                prodIndoor: "🪴 Indoor Plants",
+                prodOrganic: "♻️ Organic Fertilizers",
+                prodNutrients: "🧬 Plant Nutrients",
+                navFarmerHelp: "Farmer Help",
+                navAbout: "About Me",
+                navContact: "Contact",
+
+                heroTitle: "Agriculture Information, Products & Solutions",
+                heroDescription: "An agriculture platform for farmers, growers, students and agriculture enthusiasts.",
+                heroButton: "Explore Agriculture",
+
+                aezHeading: "🗺️ Bangladesh Agro-Ecological Zones",
+                aezDescription: "Explore the 30 Agro-Ecological Zones of Bangladesh and learn about their soil, climate and agricultural characteristics.",
+                aezInfoTitle: "📚 AEZ Information",
+                aezInfoP1: "Bangladesh has <strong>30 Agro-Ecological Zones (AEZs)</strong>, divided into <strong>88 sub-regions</strong> and <strong>535 agro-ecological units</strong>. AEZ classification considers factors such as physiography, soil characteristics, land type/flooding and agro-climatology.",
+                aezInfoP2: "The information on this page is based on official sources from the <strong>Bangladesh Agricultural Research Council (BARC)</strong> and <strong>Bangladesh Agro-Meteorological Information Service (BAMIS)</strong>.",
+                aezLink1: "View Official BARC AEZ Map (PDF)",
+                aezLink2: "View BAMIS AEZ Information",
+                aezShownNote: "The first four zones are shown above; use <strong>Explore More</strong> to view all 30 AEZs.",
+                aezExploreBtn: "Explore More",
+
+                cropsHeading: "🌱 Crop Information",
+                cropsDesc: "Explore crop varieties, cultivation, pests, diseases and management information.",
+                cropViewBtn: "View Details",
+                cropDefaultTitle: "🌱 Select a Crop",
+                cropDefaultText: "Click a crop to view its information.",
+
+                pestHeading: "🐛 Pest & Disease",
+                pestDesc: "Identify agricultural pests and diseases and learn about proper crop management.",
+                pestCard1Title: "🐛 Insect Identification",
+                pestCard1Text: "Learn to identify common agricultural insects and their damage symptoms.",
+                pestCard2Title: "🦠 Plant Diseases",
+                pestCard2Text: "Learn about common crop diseases, symptoms and management.",
+                pestCard3Title: "🔬 Diagnosis",
+                pestCard3Text: "Observe crop symptoms before deciding on management measures.",
+
+                ipmHeading: "🛡️ Integrated Pest Management",
+                ipmDesc: "Learn Integrated Pest Management (IPM) and sustainable crop protection methods.",
+                ipmCard1Title: "🌱 Prevention",
+                ipmCard1Text: "Use healthy planting materials, proper field sanitation and good cultivation practices.",
+                ipmCard2Title: "🐞 Biological Control",
+                ipmCard2Text: "Encourage beneficial organisms and natural enemies of pests.",
+                ipmCard3Title: "🧪 Safe Chemical Use",
+                ipmCard3Text: "Use pesticides responsibly and only when necessary according to proper recommendations.",
+
+                ipmStepsTitle: "📋 Five Main Steps of IPM",
+                ipmStepsIntro: "A working IPM plan is usually built around five repeating steps that guide a farmer from spotting a problem to solving it with minimum risk.",
+                ipmStep1: "1. Monitor & Identify — regularly inspect the field and correctly identify the pest, since control decisions depend on knowing exactly what is causing the damage.",
+                ipmStep2: "2. Set an Action Threshold — decide the pest level at which action actually becomes worthwhile; not every pest sighting needs treatment.",
+                ipmStep3: "3. Prevention — the first line of defence: resistant varieties, crop rotation, timely sowing and field sanitation to stop pests before they start.",
+                ipmStep4: "4. Choose a Control Method — combine cultural, mechanical, biological and, if truly needed, chemical methods, starting with the least risky option.",
+                ipmStep5: "5. Evaluate — check whether the action worked and feed that result back into the next round of monitoring.",
+
+                ipmCulturalTitle: "🌾 Cultural Control",
+                ipmCulturalText: "Cultural control means adjusting normal farming practices so the field becomes a less comfortable place for pests to begin with. It is largely preventive and one of the cheapest tools available.",
+                ipmCulturalL1: "Crop rotation and intercropping to break a pest's life cycle",
+                ipmCulturalL2: "Choosing resistant or tolerant varieties suited to the local area",
+                ipmCulturalL3: "Timely sowing/transplanting so the crop avoids the pest's peak season",
+                ipmCulturalL4: "Balanced fertilizer and irrigation, since over-fertilized or waterlogged fields attract more pests and disease",
+                ipmCulturalL5: "Removing and destroying infected plant residue after harvest",
+
+                ipmBiologicalTitle: "🐞 Biological Control",
+                ipmBiologicalText: "Biological control uses a pest's own natural enemies — predators, parasitoids and disease-causing microorganisms — to keep its numbers down without chemicals.",
+                ipmBiologicalL1: "Predators such as ladybird beetles, spiders and dragonflies that feed directly on pest insects",
+                ipmBiologicalL2: "Parasitoid wasps that lay eggs inside pest larvae and destroy them from within",
+                ipmBiologicalL3: "Microbial agents like Bacillus thuringiensis (Bt), used against caterpillar pests including stem borer and leaf folder",
+                ipmBiologicalL4: "Protecting these natural enemies by avoiding broad-spectrum pesticide sprays whenever possible",
+
+                ipmMechanicalTitle: "🖐️ Mechanical & Physical Control",
+                ipmMechanicalText: "Mechanical and physical methods remove or block pests directly, usually once numbers have already crossed a noticeable level.",
+                ipmMechanicalL1: "Hand-picking and destroying egg masses or caterpillars",
+                ipmMechanicalL2: "Light traps and pheromone traps to catch and monitor adult moths",
+                ipmMechanicalL3: "Yellow sticky traps for whiteflies, aphids and other sap-sucking insects",
+                ipmMechanicalL4: "Physical barriers or nets to keep flying pests away from seedbeds",
+
+                ipmBotanicalTitle: "🌿 Botanical / Biopesticide",
+                ipmBotanicalText: "Botanical pesticides are made from plant extracts that carry natural pest-repelling or pest-killing compounds, offering a middle ground between cultural methods and synthetic chemicals.",
+                ipmBotanicalL1: "Neem-based extracts, one of the most widely used botanical pesticides against a broad range of insects",
+                ipmBotanicalL2: "Biopesticides derived from bacteria, fungi or viruses that specifically target certain pests",
+                ipmBotanicalL3: "Generally lower toxicity to humans and beneficial insects compared with synthetic chemical sprays",
+                ipmBotanicalL4: "Best used as part of a rotation, not as the sole control method, to avoid pests building tolerance",
+
+                ipmChemicalTitle: "🧪 Chemical Control",
+                ipmChemicalText: "Chemical control is kept as the last resort in IPM — used only when monitoring shows the pest has crossed the action threshold and other methods aren't enough on their own.",
+                ipmChemicalL1: "Select a pesticide registered for the specific crop and pest, and follow the recommended dose exactly",
+                ipmChemicalL2: "Prefer targeted, selective products over broad-spectrum sprays to spare beneficial insects",
+                ipmChemicalL3: "Rotate chemical groups so the pest does not build up resistance over successive seasons",
+                ipmChemicalL4: "Always follow label safety instructions and pre-harvest interval before selling or eating the produce",
+
+                productsHeading: "🛒 Agriculture Products",
+                productsDesc: "Explore agricultural products and inputs that may be useful for growers and farmers.",
+                prodCardFruitsTitle: "Fruits & Vegetables",
+                prodCardFruitsShort: "Fresh agricultural produce.",
+                prodCardBioTitle: "Bio Pesticides",
+                prodCardBioShort: "Biological crop protection inputs.",
+                prodCardMedTitle: "Agricultural Medicines",
+                prodCardMedShort: "Crop protection products.",
+                prodCardSeedsTitle: "Seeds",
+                prodCardSeedsShort: "Quality crop seeds.",
+                prodCardSeedlingsTitle: "Seedlings & Plants",
+                prodCardSeedlingsShort: "Quality seedlings and plants.",
+                prodCardTissueTitle: "Tissue Culture & MS Media",
+                prodCardTissueShort: "Tissue culture related materials.",
+                prodCardIndoorTitle: "Indoor Plants",
+                prodCardIndoorShort: "Plants for indoor spaces.",
+                prodCardOrganicTitle: "Organic Fertilizers",
+                prodCardOrganicShort: "Organic soil amendments.",
+                prodCardNutrientsTitle: "Plant Nutrients",
+                prodCardNutrientsShort: "Plant nutrition products.",
+                productDefaultTitle: "🛒 Select a Product Category",
+                productDefaultText: "Click a product category to view information.",
+
+                farmerHeading: "👨‍🌾 Farmer Help",
+                farmerDesc: "Get practical agricultural information and solutions for better farming.",
+                farmerBtn: "Get Agriculture Help",
+
+                aboutHeading: "👨‍🌾 About Me",
+                aboutDegree: "Diploma in Agriculture",
+                aboutInstitute: "Agriculture Training Institute, Hathazari",
+                aboutDesc: "Interested in agriculture, crop production, pest and disease identification, Integrated Pest Management (IPM) and modern agricultural technologies.",
+
+                contactHeading: "📞 Contact Me",
+                contactDesc: "For agricultural information, suggestions or project-related communication, feel free to contact me.",
+                contactEmailLabel: "Email",
+                contactPhoneLabel: "Phone",
+                contactFbLabel: "Facebook",
+                contactFbLinkText: "Visit My Facebook Profile",
+
+                footerTagline: "Agriculture Information, Products & Solutions",
+                footerCopyright: "© 2026 Zee Agri. All rights reserved."
+            },
+
+            bn: {
+                pageTitle: "জি এগ্রি | কৃষি তথ্য ও সমাধান",
+
+                settingsTitle: "⚙️ সেটিংস",
+                settingsLanguageLabel: "ভাষা",
+                settingsThemeLabel: "থিম",
+                themeLight: "☀️ লাইট মোড",
+                themeDark: "🌙 ডার্ক মোড",
+                settingsFontLabel: "লেখার আকার",
+                fontNormal: "স্বাভাবিক",
+                fontLarge: "বড়",
+                fontExtra: "অতিরিক্ত বড়",
+                settingsReset: "সেটিংস রিসেট করুন",
+
+                navHome: "হোম",
+                navAgroZones: "কৃষি অঞ্চল",
+                navCrops: "ফসল",
+                navPest: "পোকা ও রোগ",
+                navIpm: "আইপিএম ▾",
+                navIpmWhat: "🛡️ আইপিএম কী?",
+                navIpmSteps: "📋 পাঁচটি প্রধান ধাপ",
+                navIpmCultural: "🌾 কৃষিতাত্ত্বিক নিয়ন্ত্রণ",
+                navIpmBiological: "🐞 জৈবিক নিয়ন্ত্রণ",
+                navIpmMechanical: "🖐️ যান্ত্রিক ও শারীরিক নিয়ন্ত্রণ",
+                navIpmBotanical: "🌿 উদ্ভিদজাত / জৈব বালাইনাশক",
+                navIpmChemical: "🧪 রাসায়নিক নিয়ন্ত্রণ",
+                navProducts: "পণ্য ▾",
+                prodFruits: "🍎 ফলমূল ও শাকসবজি",
+                prodBio: "🦠 জৈব বালাইনাশক",
+                prodMed: "💊 কৃষি ঔষধ",
+                prodSeeds: "🌱 বীজ",
+                prodSeedlings: "🌿 চারা ও গাছ",
+                prodTissue: "🧪 টিস্যু কালচার ও এমএস মিডিয়া",
+                prodIndoor: "🪴 ইনডোর গাছপালা",
+                prodOrganic: "♻️ জৈব সার",
+                prodNutrients: "🧬 উদ্ভিদ পুষ্টি",
+                navFarmerHelp: "কৃষক সহায়তা",
+                navAbout: "আমার সম্পর্কে",
+                navContact: "যোগাযোগ",
+
+                heroTitle: "কৃষি তথ্য, পণ্য ও সমাধান",
+                heroDescription: "কৃষক, চাষি, শিক্ষার্থী এবং কৃষিপ্রেমীদের জন্য একটি কৃষিভিত্তিক প্ল্যাটফর্ম।",
+                heroButton: "কৃষি সম্পর্কে জানুন",
+
+                aezHeading: "🗺️ বাংলাদেশের কৃষি-বাস্তুতান্ত্রিক অঞ্চল",
+                aezDescription: "বাংলাদেশের ৩০টি কৃষি-পরিবেশ অঞ্চল সম্পর্কে জানুন এবং মাটি, জলবায়ু ও কৃষি বৈশিষ্ট্য সম্পর্কে তথ্য নিন।",
+                aezInfoTitle: "📚 এইজেড (AEZ) তথ্য",
+                aezInfoP1: "বাংলাদেশে রয়েছে <strong>৩০টি কৃষি-বাস্তুতান্ত্রিক অঞ্চল (AEZ)</strong>, যা <strong>৮৮টি উপ-অঞ্চলে</strong> এবং <strong>৫৩৫টি কৃষি-বাস্তুতান্ত্রিক একক</strong>-এ বিভক্ত। এইজেড শ্রেণিবিন্যাসে ভূ-প্রকৃতি, মাটির বৈশিষ্ট্য, ভূমির ধরন/বন্যা এবং কৃষি-জলবায়ুর মতো বিষয়গুলো বিবেচনা করা হয়।",
+                aezInfoP2: "এই পৃষ্ঠার তথ্য <strong>বাংলাদেশ কৃষি গবেষণা কাউন্সিল (বিএআরসি)</strong> এবং <strong>বাংলাদেশ কৃষি-আবহাওয়া তথ্য সেবা (বামিস)</strong>-এর সরকারি সূত্রের ভিত্তিতে দেওয়া হয়েছে।",
+                aezLink1: "সরকারি বিএআরসি এইজেড মানচিত্র দেখুন (পিডিএফ)",
+                aezLink2: "বামিস এইজেড তথ্য দেখুন",
+                aezShownNote: "উপরে প্রথম চারটি অঞ্চল দেখানো হয়েছে; সবগুলো ৩০টি এইজেড দেখতে <strong>আরও দেখুন</strong>-এ ক্লিক করুন।",
+                aezExploreBtn: "আরও দেখুন",
+
+                cropsHeading: "🌱 ফসলের তথ্য",
+                cropsDesc: "ফসলের জাত, চাষাবাদ, পোকামাকড়, রোগ এবং ব্যবস্থাপনা সম্পর্কিত তথ্য জানুন।",
+                cropViewBtn: "বিস্তারিত দেখুন",
+                cropDefaultTitle: "🌱 একটি ফসল বেছে নিন",
+                cropDefaultText: "তথ্য দেখতে কোনো ফসলে ক্লিক করুন।",
+
+                pestHeading: "🐛 পোকা ও রোগ",
+                pestDesc: "কৃষি পোকামাকড় ও রোগ শনাক্ত করুন এবং সঠিক ফসল ব্যবস্থাপনা সম্পর্কে জানুন।",
+                pestCard1Title: "🐛 পোকা শনাক্তকরণ",
+                pestCard1Text: "সাধারণ কৃষি পোকামাকড় এবং তাদের ক্ষতির লক্ষণ চিনতে শিখুন।",
+                pestCard2Title: "🦠 উদ্ভিদ রোগ",
+                pestCard2Text: "সাধারণ ফসলের রোগ, লক্ষণ ও ব্যবস্থাপনা সম্পর্কে জানুন।",
+                pestCard3Title: "🔬 নির্ণয়",
+                pestCard3Text: "ব্যবস্থাপনা পদক্ষেপ নেওয়ার আগে ফসলের লক্ষণ পর্যবেক্ষণ করুন।",
+
+                ipmHeading: "🛡️ সমন্বিত বালাই ব্যবস্থাপনা",
+                ipmDesc: "সমন্বিত বালাই ব্যবস্থাপনা (আইপিএম) এবং টেকসই ফসল সুরক্ষা পদ্ধতি সম্পর্কে জানুন।",
+                ipmCard1Title: "🌱 প্রতিরোধ",
+                ipmCard1Text: "সুস্থ রোপণ সামগ্রী, যথাযথ জমি পরিচ্ছন্নতা এবং ভালো চাষাবাদ পদ্ধতি ব্যবহার করুন।",
+                ipmCard2Title: "🐞 জৈবিক নিয়ন্ত্রণ",
+                ipmCard2Text: "উপকারী জীব এবং পোকার প্রাকৃতিক শত্রুদের উৎসাহিত করুন।",
+                ipmCard3Title: "🧪 নিরাপদ রাসায়নিক ব্যবহার",
+                ipmCard3Text: "প্রয়োজন অনুযায়ী ও সঠিক সুপারিশ মেনে দায়িত্বশীলভাবে বালাইনাশক ব্যবহার করুন।",
+
+                ipmStepsTitle: "📋 আইপিএম-এর পাঁচটি প্রধান ধাপ",
+                ipmStepsIntro: "একটি কার্যকর আইপিএম পরিকল্পনা সাধারণত পাঁচটি পুনরাবৃত্ত ধাপের ওপর ভিত্তি করে গড়ে ওঠে, যা কৃষককে সমস্যা শনাক্ত করা থেকে শুরু করে ন্যূনতম ঝুঁকিতে সমাধান পর্যন্ত পথ দেখায়।",
+                ipmStep1: "১. পর্যবেক্ষণ ও শনাক্তকরণ — নিয়মিত জমি পরিদর্শন করুন এবং সঠিকভাবে পোকা শনাক্ত করুন, কারণ নিয়ন্ত্রণ সিদ্ধান্ত নির্ভর করে ঠিক কী কারণে ক্ষতি হচ্ছে তা জানার ওপর।",
+                ipmStep2: "২. অ্যাকশন থ্রেশহোল্ড নির্ধারণ — কোন মাত্রায় পোকা থাকলে সত্যিই ব্যবস্থা নেওয়া দরকার তা ঠিক করুন; প্রতিটি পোকা দেখা মাত্রই চিকিৎসার দরকার নেই।",
+                ipmStep3: "৩. প্রতিরোধ — প্রথম প্রতিরক্ষা স্তর: প্রতিরোধী জাত, শস্য পর্যায়ক্রম, সময়মতো বপন এবং জমি পরিচ্ছন্নতা যা পোকা শুরু হওয়ার আগেই ঠেকায়।",
+                ipmStep4: "৪. নিয়ন্ত্রণ পদ্ধতি বাছাই — কৃষিতাত্ত্বিক, যান্ত্রিক, জৈবিক এবং সত্যিকার প্রয়োজনে রাসায়নিক পদ্ধতির সমন্বয় করুন, সবচেয়ে কম ঝুঁকিপূর্ণ উপায় দিয়ে শুরু করুন।",
+                ipmStep5: "৫. মূল্যায়ন — গৃহীত ব্যবস্থা কাজ করেছে কিনা যাচাই করুন এবং পরবর্তী পর্যবেক্ষণ চক্রে সেই ফলাফল কাজে লাগান।",
+
+                ipmCulturalTitle: "🌾 কৃষিতাত্ত্বিক নিয়ন্ত্রণ",
+                ipmCulturalText: "কৃষিতাত্ত্বিক নিয়ন্ত্রণ মানে স্বাভাবিক চাষাবাদ পদ্ধতি এমনভাবে সমন্বয় করা যাতে জমি পোকার জন্য শুরু থেকেই কম উপযোগী হয়ে ওঠে। এটি মূলত প্রতিরোধমূলক এবং সবচেয়ে সাশ্রয়ী পদ্ধতিগুলোর একটি।",
+                ipmCulturalL1: "শস্য পর্যায়ক্রম ও মিশ্র চাষ যা পোকার জীবনচক্র ভেঙে দেয়",
+                ipmCulturalL2: "স্থানীয় পরিবেশের উপযোগী প্রতিরোধী বা সহনশীল জাত বেছে নেওয়া",
+                ipmCulturalL3: "সময়মতো বপন/রোপণ যাতে ফসল পোকার প্রধান মৌসুম এড়িয়ে যায়",
+                ipmCulturalL4: "সুষম সার ও সেচ ব্যবস্থাপনা, কারণ অতিরিক্ত সার দেওয়া বা জলাবদ্ধ জমি বেশি পোকা ও রোগ আকর্ষণ করে",
+                ipmCulturalL5: "ফসল তোলার পর আক্রান্ত গাছের অবশিষ্টাংশ সরিয়ে ধ্বংস করা",
+
+                ipmBiologicalTitle: "🐞 জৈবিক নিয়ন্ত্রণ",
+                ipmBiologicalText: "জৈবিক নিয়ন্ত্রণে পোকার নিজস্ব প্রাকৃতিক শত্রু — শিকারি প্রাণী, পরজীবী পোকা এবং রোগ সৃষ্টিকারী অণুজীব — ব্যবহার করে রাসায়নিক ছাড়াই এর সংখ্যা নিয়ন্ত্রণে রাখা হয়।",
+                ipmBiologicalL1: "লেডিবার্ড বিটল, মাকড়সা ও ফড়িংয়ের মতো শিকারি যারা সরাসরি ক্ষতিকর পোকা খায়",
+                ipmBiologicalL2: "পরজীবী বোলতা যারা ক্ষতিকর পোকার শুককীটের ভেতরে ডিম পাড়ে এবং ভেতর থেকে ধ্বংস করে",
+                ipmBiologicalL3: "ব্যাসিলাস থুরিনজিয়েনসিস (বিটি)-এর মতো জীবাণুঘটিত উপাদান, যা স্টেম বোরার ও লিফ ফোল্ডারসহ শুককীট জাতীয় পোকার বিরুদ্ধে ব্যবহৃত হয়",
+                ipmBiologicalL4: "যতটা সম্ভব ব্যাপক-বর্ণালী কীটনাশক স্প্রে এড়িয়ে এই প্রাকৃতিক শত্রুদের সংরক্ষণ করা",
+
+                ipmMechanicalTitle: "🖐️ যান্ত্রিক ও শারীরিক নিয়ন্ত্রণ",
+                ipmMechanicalText: "যান্ত্রিক ও শারীরিক পদ্ধতি সরাসরি পোকা সরিয়ে দেয় বা আটকায়, সাধারণত যখন পোকার সংখ্যা ইতিমধ্যে লক্ষণীয় মাত্রা ছাড়িয়ে যায়।",
+                ipmMechanicalL1: "ডিমের গুচ্ছ বা শুককীট হাতে কুড়িয়ে ধ্বংস করা",
+                ipmMechanicalL2: "পূর্ণবয়স্ক মথ ধরতে ও পর্যবেক্ষণ করতে আলোর ফাঁদ ও ফেরোমন ফাঁদ ব্যবহার",
+                ipmMechanicalL3: "সাদা মাছি, জাব পোকা ও অন্যান্য রসচোষা পোকার জন্য হলুদ আঠালো ফাঁদ",
+                ipmMechanicalL4: "চারা জমিতে উড়ন্ত পোকা ঠেকাতে শারীরিক বেড়া বা নেট ব্যবহার",
+
+                ipmBotanicalTitle: "🌿 উদ্ভিদজাত / জৈব বালাইনাশক",
+                ipmBotanicalText: "উদ্ভিদজাত বালাইনাশক গাছের নির্যাস থেকে তৈরি হয় যাতে প্রাকৃতিকভাবে পোকা দূরে রাখা বা মারার উপাদান থাকে, যা কৃষিতাত্ত্বিক পদ্ধতি ও কৃত্রিম রাসায়নিকের মাঝামাঝি একটি বিকল্প।",
+                ipmBotanicalL1: "নিমভিত্তিক নির্যাস, বিস্তৃত পরিসরের পোকার বিরুদ্ধে সবচেয়ে বেশি ব্যবহৃত উদ্ভিদজাত বালাইনাশকগুলোর একটি",
+                ipmBotanicalL2: "ব্যাকটেরিয়া, ছত্রাক বা ভাইরাস থেকে তৈরি জৈব বালাইনাশক যা নির্দিষ্ট পোকাকে লক্ষ্য করে কাজ করে",
+                ipmBotanicalL3: "কৃত্রিম রাসায়নিক স্প্রের তুলনায় মানুষ ও উপকারী পোকার জন্য সাধারণত কম বিষাক্ত",
+                ipmBotanicalL4: "পোকার সহনশীলতা তৈরি এড়াতে একমাত্র পদ্ধতি হিসেবে নয়, বরং পালাক্রমে ব্যবহার করাই ভালো",
+
+                ipmChemicalTitle: "🧪 রাসায়নিক নিয়ন্ত্রণ",
+                ipmChemicalText: "আইপিএম-এ রাসায়নিক নিয়ন্ত্রণকে শেষ উপায় হিসেবে রাখা হয় — কেবল তখনই ব্যবহার করা হয় যখন পর্যবেক্ষণে দেখা যায় পোকা অ্যাকশন থ্রেশহোল্ড ছাড়িয়ে গেছে এবং অন্য পদ্ধতি একা যথেষ্ট নয়।",
+                ipmChemicalL1: "নির্দিষ্ট ফসল ও পোকার জন্য নিবন্ধিত কীটনাশক বেছে নিন এবং সুপারিশকৃত মাত্রা যথাযথভাবে মেনে চলুন",
+                ipmChemicalL2: "উপকারী পোকা রক্ষায় ব্যাপক-বর্ণালী স্প্রের বদলে লক্ষ্যভিত্তিক, নির্বাচিত পণ্যকে প্রাধান্য দিন",
+                ipmChemicalL3: "পরপর মৌসুমে পোকার সহনশীলতা তৈরি ঠেকাতে বিভিন্ন গ্রুপের রাসায়নিক পালাক্রমে ব্যবহার করুন",
+                ipmChemicalL4: "ফসল বিক্রি বা খাওয়ার আগে লেবেলের নিরাপত্তা নির্দেশনা ও প্রি-হারভেস্ট ইন্টারভ্যাল সবসময় মেনে চলুন",
+
+                productsHeading: "🛒 কৃষি পণ্য",
+                productsDesc: "চাষি ও কৃষকদের জন্য উপযোগী কৃষি পণ্য ও উপকরণ সম্পর্কে জানুন।",
+                prodCardFruitsTitle: "ফলমূল ও শাকসবজি",
+                prodCardFruitsShort: "তাজা কৃষিপণ্য।",
+                prodCardBioTitle: "জৈব বালাইনাশক",
+                prodCardBioShort: "জৈবিক ফসল সুরক্ষা উপকরণ।",
+                prodCardMedTitle: "কৃষি ঔষধ",
+                prodCardMedShort: "ফসল সুরক্ষা পণ্য।",
+                prodCardSeedsTitle: "বীজ",
+                prodCardSeedsShort: "মানসম্মত ফসলের বীজ।",
+                prodCardSeedlingsTitle: "চারা ও গাছ",
+                prodCardSeedlingsShort: "মানসম্মত চারা ও গাছ।",
+                prodCardTissueTitle: "টিস্যু কালচার ও এমএস মিডিয়া",
+                prodCardTissueShort: "টিস্যু কালচার সম্পর্কিত উপকরণ।",
+                prodCardIndoorTitle: "ইনডোর গাছপালা",
+                prodCardIndoorShort: "ঘরের ভেতরের জন্য উপযোগী গাছ।",
+                prodCardOrganicTitle: "জৈব সার",
+                prodCardOrganicShort: "জৈব মাটি সংশোধক।",
+                prodCardNutrientsTitle: "উদ্ভিদ পুষ্টি",
+                prodCardNutrientsShort: "উদ্ভিদ পুষ্টি পণ্য।",
+                productDefaultTitle: "🛒 একটি পণ্য শ্রেণি বেছে নিন",
+                productDefaultText: "তথ্য দেখতে কোনো পণ্য শ্রেণিতে ক্লিক করুন।",
+
+                farmerHeading: "👨‍🌾 কৃষক সহায়তা",
+                farmerDesc: "ভালো চাষাবাদের জন্য প্রয়োজনীয় কৃষি তথ্য ও সমাধান পান।",
+                farmerBtn: "কৃষি সহায়তা নিন",
+
+                aboutHeading: "👨‍🌾 আমার সম্পর্কে",
+                aboutDegree: "কৃষিতে ডিপ্লোমা",
+                aboutInstitute: "কৃষি প্রশিক্ষণ ইনস্টিটিউট, হাটহাজারী",
+                aboutDesc: "কৃষি, ফসল উৎপাদন, পোকা ও রোগ শনাক্তকরণ, সমন্বিত বালাই ব্যবস্থাপনা (আইপিএম) এবং আধুনিক কৃষি প্রযুক্তিতে আগ্রহী।",
+
+                contactHeading: "📞 যোগাযোগ করুন",
+                contactDesc: "কৃষি সংক্রান্ত তথ্য, পরামর্শ বা প্রকল্প সম্পর্কিত যোগাযোগের জন্য নির্দ্বিধায় আমার সাথে যোগাযোগ করুন।",
+                contactEmailLabel: "ইমেইল",
+                contactPhoneLabel: "ফোন",
+                contactFbLabel: "ফেসবুক",
+                contactFbLinkText: "আমার ফেসবুক প্রোফাইল দেখুন",
+
+                footerTagline: "কৃষি তথ্য, পণ্য ও সমাধান",
+                footerCopyright: "© ২০২৬ জি এগ্রি। সর্বস্বত্ব সংরক্ষিত।"
+            }
+
+        };
 
 
-            /*
-                14 April 2026 = 1 Boishakh 1433
-            */
+        /* =========================
+           CROP DATA
+        ========================== */
 
-            const baseDate = new Date(2026, 3, 14);
+        const cropData = {
 
-            const currentDate = new Date(
-                date.getFullYear(),
-                date.getMonth(),
-                date.getDate()
+            rice: {
+
+                en: {
+                    title: "🌾 Rice",
+                    text: "Rice is one of the major food crops. Proper variety selection, land preparation, balanced fertilization, irrigation and pest management are important for successful production."
+                },
+
+                bn: {
+                    title: "🌾 ধান",
+                    text: "ধান বাংলাদেশের অন্যতম প্রধান খাদ্যশস্য। সঠিক জাত নির্বাচন, জমি প্রস্তুতি, সুষম সার ব্যবস্থাপনা, সেচ এবং বালাই ব্যবস্থাপনা ধানের ভালো ফলনের জন্য গুরুত্বপূর্ণ।"
+                }
+
+            },
+
+            wheat: {
+
+                en: {
+                    title: "🌾 Wheat",
+                    text: "Wheat is mainly cultivated during the cooler season. Proper sowing time, quality seed, balanced fertilizer and irrigation management are important."
+                },
+
+                bn: {
+                    title: "🌾 গম",
+                    text: "গম প্রধানত শীতকালীন মৌসুমে চাষ করা হয়। সঠিক সময়ে বপন, মানসম্মত বীজ, সুষম সার ও সেচ ব্যবস্থাপনা গুরুত্বপূর্ণ।"
+                }
+
+            },
+
+            maize: {
+
+                en: {
+                    title: "🌽 Maize",
+                    text: "Maize requires good soil preparation, quality seed, proper plant spacing, balanced nutrition and effective pest management."
+                },
+
+                bn: {
+                    title: "🌽 ভুট্টা",
+                    text: "ভুট্টার জন্য ভালোভাবে জমি প্রস্তুত করা, মানসম্মত বীজ, সঠিক দূরত্ব, সুষম পুষ্টি এবং কার্যকর বালাই ব্যবস্থাপনা গুরুত্বপূর্ণ।"
+                }
+
+            },
+
+            chili: {
+
+                en: {
+                    title: "🌶️ Chili",
+                    text: "Chili production requires suitable varieties, healthy seedlings, proper irrigation, balanced fertilizer and careful monitoring of insects and diseases."
+                },
+
+                bn: {
+                    title: "🌶️ মরিচ",
+                    text: "মরিচ চাষে উপযোগী জাত, সুস্থ চারা, সঠিক সেচ, সুষম সার এবং পোকামাকড় ও রোগ নিয়মিত পর্যবেক্ষণ গুরুত্বপূর্ণ।"
+                }
+
+            },
+
+            tomato: {
+
+                en: {
+                    title: "🍅 Tomato",
+                    text: "Tomato grows well under suitable temperature and good management. Proper nursery management, staking, irrigation, nutrition and disease management are important."
+                },
+
+                bn: {
+                    title: "🍅 টমেটো",
+                    text: "উপযুক্ত তাপমাত্রা ও ভালো ব্যবস্থাপনায় টমেটো ভালো হয়। নার্সারি ব্যবস্থাপনা, খুঁটি দেওয়া, সেচ, পুষ্টি ও রোগ ব্যবস্থাপনা গুরুত্বপূর্ণ।"
+                }
+
+            }
+
+        };
+
+
+        /* =========================
+           PRODUCT DATA
+           (Now bilingual, just like cropData,
+           so the detail panel switches language too.)
+        ========================== */
+
+        const productData = {
+
+            fruits: {
+                en: { title: "🍎 Fruits & Vegetables", text: "Fresh fruits and vegetables can be included as an agricultural produce category for growers and consumers." },
+                bn: { title: "🍎 ফলমূল ও শাকসবজি", text: "তাজা ফলমূল ও শাকসবজি চাষি এবং ভোক্তাদের জন্য একটি কৃষিপণ্য শ্রেণি হিসেবে অন্তর্ভুক্ত করা যেতে পারে।" }
+            },
+
+            biopesticides: {
+                en: { title: "🦠 Bio Pesticides", text: "Biopesticides are biological crop protection products. Their appropriate use can be part of an Integrated Pest Management approach." },
+                bn: { title: "🦠 জৈব বালাইনাশক", text: "জৈব বালাইনাশক হলো জৈবিক ফসল সুরক্ষা পণ্য। এগুলোর সঠিক ব্যবহার সমন্বিত বালাই ব্যবস্থাপনার একটি অংশ হতে পারে।" }
+            },
+
+            medicines: {
+                en: { title: "💊 Agricultural Medicines", text: "Agricultural medicines and crop protection products should be selected and used according to the crop, pest or disease and proper recommendations." },
+                bn: { title: "💊 কৃষি ঔষধ", text: "কৃষি ঔষধ ও ফসল সুরক্ষা পণ্য ফসল, পোকা বা রোগ এবং সঠিক সুপারিশ অনুযায়ী বেছে নিয়ে ব্যবহার করা উচিত।" }
+            },
+
+            seeds: {
+                en: { title: "🌱 Seeds", text: "Quality seed is an important foundation for successful crop production. Variety selection should match the crop, season and local conditions." },
+                bn: { title: "🌱 বীজ", text: "মানসম্মত বীজ সফল ফসল উৎপাদনের একটি গুরুত্বপূর্ণ ভিত্তি। জাত নির্বাচন ফসল, মৌসুম এবং স্থানীয় পরিবেশের সাথে সামঞ্জস্যপূর্ণ হওয়া উচিত।" }
+            },
+
+            seedlings: {
+                en: { title: "🌿 Seedlings & Plants", text: "Healthy seedlings and quality planting materials can help establish a healthy crop." },
+                bn: { title: "🌿 চারা ও গাছ", text: "সুস্থ চারা এবং মানসম্মত রোপণ সামগ্রী একটি সুস্থ ফসল প্রতিষ্ঠায় সহায়ক হতে পারে।" }
+            },
+
+            tissue: {
+                en: { title: "🧪 Tissue Culture & MS Media", text: "Tissue culture and MS media are useful in plant propagation and laboratory-based plant production." },
+                bn: { title: "🧪 টিস্যু কালচার ও এমএস মিডিয়া", text: "টিস্যু কালচার ও এমএস মিডিয়া উদ্ভিদ বংশবিস্তার এবং গবেষণাগারভিত্তিক উদ্ভিদ উৎপাদনে কাজে লাগে।" }
+            },
+
+            indoor: {
+                en: { title: "🪴 Indoor Plants", text: "Indoor plants can be used for home, office and other indoor environments." },
+                bn: { title: "🪴 ইনডোর গাছপালা", text: "ইনডোর গাছপালা বাড়ি, অফিস এবং অন্যান্য ঘরের ভেতরের পরিবেশে ব্যবহার করা যায়।" }
+            },
+
+            organic: {
+                en: { title: "♻️ Organic Fertilizers", text: "Organic fertilizers and organic soil amendments can contribute to soil management when used appropriately." },
+                bn: { title: "♻️ জৈব সার", text: "জৈব সার এবং জৈব মাটি সংশোধক সঠিকভাবে ব্যবহার করলে মাটি ব্যবস্থাপনায় অবদান রাখতে পারে।" }
+            },
+
+            nutrients: {
+                en: { title: "🧬 Plant Nutrients", text: "Plant nutrients are essential for crop growth. Proper nutrient management should consider crop requirements and soil conditions." },
+                bn: { title: "🧬 উদ্ভিদ পুষ্টি", text: "উদ্ভিদ পুষ্টি উপাদান ফসলের বৃদ্ধির জন্য অপরিহার্য। সঠিক পুষ্টি ব্যবস্থাপনায় ফসলের চাহিদা ও মাটির অবস্থা বিবেচনা করা উচিত।" }
+            }
+
+        };
+
+
+        /* =========================
+           PEST DATA
+           (Real, researched pest profiles for major
+           crops grown in Bangladesh — rice, maize,
+           chili/tomato. Each entry renders as a card
+           with a stylised 3D-look icon badge.)
+        ========================== */
+
+        const pestData = [
+
+            {
+                images: [
+    "images/pests/yellow-stem-borer-1.jpg",
+    "images/pests/yellow-stem-borer-2.jpg"
+],
+                en: {
+                    name: "Yellow Stem Borer",
+                    sci: "Scirpophaga incertula",
+                    crop: "Crop: Rice",
+                    damage: "Damage: Caterpillars bore into the stem; the central shoot dries up (\"deadheart\") at the vegetative stage, and at the reproductive stage the earhead turns white and empty (\"whitehead\"). Can cause very heavy yield loss if unmanaged.",
+                    control: "Management: Use resistant varieties, clip and destroy egg masses, set up light traps for adult moths, and apply recommended insecticide only if the deadheart/whitehead level crosses the action threshold."
+                },
+                bn: {
+                    name: "হলুদ কাণ্ড ছিদ্রকারী পোকা (স্টেম বোরার)",
+                    sci: "Scirpophaga incertula",
+                    crop: "ফসল: ধান",
+                    damage: "ক্ষতি: শুককীট কাণ্ডের ভেতরে ঢুকে খায়, ফলে চারা অবস্থায় কেন্দ্রীয় কুশি শুকিয়ে যায় (মরা কুশি/ডেডহার্ট) এবং শীষ অবস্থায় ধানের শীষ সাদা ও চিটা হয়ে যায় (সাদা শীষ)। নিয়ন্ত্রণ না করলে ফলনের বড় ক্ষতি হতে পারে।",
+                    control: "ব্যবস্থাপনা: প্রতিরোধী জাত ব্যবহার করুন, ডিমের গুচ্ছ কেটে ধ্বংস করুন, পতঙ্গ ধরতে আলোর ফাঁদ ব্যবহার করুন এবং মরা কুশি/সাদা শীষের হার নির্দিষ্ট মাত্রা ছাড়ালেই কেবল সুপারিশকৃত কীটনাশক প্রয়োগ করুন।"
+                }
+            },
+
+            {
+                images: [
+    "images/pests/brown-planthopper-1.jpg",
+    "images/pests/brown-planthopper-2.jpg"
+],
+                en: {
+                    name: "Brown Planthopper (BPH)",
+                    sci: "Nilaparvata lugens",
+                    crop: "Crop: Rice",
+                    damage: "Damage: Nymphs and adults gather at the base of the plant and suck sap, turning the field yellow-brown and dried out (\"hopperburn\"). It also spreads viral diseases such as ragged stunt and grassy stunt.",
+                    control: "Management: Avoid excess nitrogen fertilizer, keep proper plant spacing for airflow, conserve natural enemies like spiders, and drain the field periodically; use a recommended insecticide only when hopper numbers exceed the threshold near the plant base."
+                },
+                bn: {
+                    name: "বাদামি গাছফড়িং (বিপিএইচ)",
+                    sci: "Nilaparvata lugens",
+                    crop: "ফসল: ধান",
+                    damage: "ক্ষতি: নিম্ফ ও পূর্ণবয়স্ক পোকা গাছের গোড়ায় জড়ো হয়ে রস চুষে খায়, ফলে জমি বাদামি হয়ে শুকিয়ে যায় (হপারবার্ন)। এটি র‌্যাগেড স্টান্ট ও গ্রাসি স্টান্টের মতো ভাইরাসজনিত রোগও ছড়ায়।",
+                    control: "ব্যবস্থাপনা: অতিরিক্ত নাইট্রোজেন সার এড়িয়ে চলুন, গাছের মাঝে সঠিক দূরত্ব রাখুন যাতে বাতাস চলাচল করে, মাকড়সার মতো প্রাকৃতিক শত্রু সংরক্ষণ করুন এবং মাঝেমধ্যে জমি শুকিয়ে নিন; গোড়ায় পোকার সংখ্যা নির্দিষ্ট মাত্রা ছাড়ালেই কেবল সুপারিশকৃত কীটনাশক ব্যবহার করুন।"
+                }
+            },
+
+            {
+                images: [
+    "images/pests/rice-leaf-folder-1.jpg",
+    "images/pests/rice-leaf-folder-2.jpg"
+],
+                en: {
+                    name: "Rice Leaf Folder",
+                    sci: "Cnaphalocrocis medinalis",
+                    crop: "Crop: Rice",
+                    damage: "Damage: Larvae fold the leaf lengthwise, webbing the edges together and scraping the green tissue from inside, leaving white/dry streaks that reduce the leaf's ability to photosynthesize.",
+                    control: "Management: Avoid excess nitrogen, encourage natural enemies such as parasitoid wasps, hand-remove folded leaves in small plots, and spray only when folded-leaf damage crosses the recommended threshold."
+                },
+                bn: {
+                    name: "পাতা মোড়ানো পোকা (লিফ ফোল্ডার)",
+                    sci: "Cnaphalocrocis medinalis",
+                    crop: "ফসল: ধান",
+                    damage: "ক্ষতি: শুককীট পাতা লম্বালম্বি মুড়ে ভেতরে থেকে সবুজ অংশ চেঁছে খায়, ফলে পাতায় সাদা/শুকনো দাগ পড়ে এবং পাতার খাদ্য তৈরির ক্ষমতা কমে যায়।",
+                    control: "ব্যবস্থাপনা: অতিরিক্ত নাইট্রোজেন এড়িয়ে চলুন, পরজীবী পোকার মতো প্রাকৃতিক শত্রু সংরক্ষণ করুন, ছোট জমিতে হাতে মোড়ানো পাতা তুলে ফেলুন এবং মোড়ানো পাতার হার সুপারিশকৃত মাত্রা ছাড়ালেই কেবল স্প্রে করুন।"
+                }
+            },
+
+            {
+                icon: "🪳",
+                images: [
+    "images/pests/gundhi-bug-1.jpg",
+    "images/pests/gundhi-bug-2.jpg"
+],
+                en: {
+                    name: "Gundhi Bug (Rice Bug)",
+                    sci: "Leptocorisa acuta",
+                    crop: "Crop: Rice",
+                    damage: "Damage: Adults and nymphs suck the milky sap from developing grains at the flowering/milk stage, leaving the earhead looking normal outside but empty or spotted with brown patches, and giving the grain an unpleasant smell.",
+                    control: "Management: Keep field edges and nearby grassy bunds clean since bugs shelter there, use a sweep net or light trap to monitor numbers, and spray only during the vulnerable milky-grain stage if the bug count is high."
+                },
+                bn: {
+                    name: "গন্ধি পোকা",
+                    sci: "Leptocorisa acuta",
+                    crop: "ফসল: ধান",
+                    damage: "ক্ষতি: পূর্ণবয়স্ক ও নিম্ফ পোকা ফুল আসা/দুধ অবস্থায় ধানের দানার দুধের মতো রস চুষে খায়, ফলে শীষ বাইরে থেকে স্বাভাবিক দেখালেও ভেতরে চিটা বা বাদামি দাগযুক্ত হয়ে যায়, এবং চালেও দুর্গন্ধ থেকে যায়।",
+                    control: "ব্যবস্থাপনা: জমির আইল ও আশপাশের ঘাস পরিষ্কার রাখুন কারণ পোকা সেখানে আশ্রয় নেয়, সুইপ নেট বা আলোর ফাঁদ দিয়ে পোকার সংখ্যা পর্যবেক্ষণ করুন, এবং দুধ অবস্থায় পোকার সংখ্যা বেশি হলেই কেবল স্প্রে করুন।"
+                }
+            },
+
+            {
+                images: [
+    "images/pests/fall-armyworm-1.jpg",
+    "images/pests/fall-armyworm-2.jpg"
+],
+                en: {
+                    name: "Fall Armyworm",
+                    sci: "Spodoptera frugiperda",
+                    crop: "Crop: Maize (also attacks rice, wheat and other crops)",
+                    damage: "Damage: Larvae feed inside the whorl of young maize plants, leaving ragged, window-pane-like holes in leaves and dropping visible sawdust-like droppings; a heavy infestation can destroy a field within days. First reported in Bangladesh in 2018 and now a recurring threat, especially in Rabi-season maize.",
+                    control: "Management: Scout fields regularly for egg masses and young larvae in the whorl, hand-crush egg clusters, use pheromone traps to monitor adult moths, encourage natural enemies, and apply a recommended insecticide directly into the whorl when infestation is confirmed."
+                },
+                bn: {
+                    name: "ফল আর্মিওয়ার্ম",
+                    sci: "Spodoptera frugiperda",
+                    crop: "ফসল: ভুট্টা (ধান, গমসহ অন্যান্য ফসলেও আক্রমণ করে)",
+                    damage: "ক্ষতি: শুককীট ভুট্টার কচি পাতার ভাঁজের ভেতরে ঢুকে খায়, ফলে পাতায় জানালার মতো অনিয়মিত ছিদ্র দেখা যায় এবং করাতের গুঁড়ার মতো বিষ্ঠা দেখা যায়; আক্রমণ বেশি হলে কয়েক দিনেই পুরো জমি নষ্ট হয়ে যেতে পারে। ২০১৮ সালে বাংলাদেশে প্রথম শনাক্ত হয় এবং এখন বিশেষত রবি মৌসুমের ভুট্টায় বারবার দেখা দেয়।",
+                    control: "ব্যবস্থাপনা: নিয়মিত জমি পর্যবেক্ষণ করে ডিমের গুচ্ছ ও কচি শুককীট খুঁজে বের করুন, ডিমের গুচ্ছ হাতে চেপে ধ্বংস করুন, পতঙ্গ পর্যবেক্ষণে ফেরোমন ফাঁদ ব্যবহার করুন, প্রাকৃতিক শত্রু সংরক্ষণ করুন, এবং আক্রমণ নিশ্চিত হলে সরাসরি পাতার ভাঁজে সুপারিশকৃত কীটনাশক প্রয়োগ করুন।"
+                }
+            },
+
+            {
+                images: [
+    "images/pests/whitefly-1.jpg",
+    "images/pests/whitefly-2.jpg"
+],
+                en: {
+                    name: "Whitefly",
+                    sci: "Bemisia tabaci",
+                    crop: "Crop: Chili, tomato and other vegetables",
+                    damage: "Damage: Tiny white insects on the underside of leaves suck sap, causing yellowing and stunted growth, and coat leaves with sticky honeydew that grows sooty mould. Its biggest threat is spreading Tomato/Chili Leaf Curl Virus, which can severely stunt plants and cut yield.",
+                    control: "Management: Use yellow sticky traps to monitor and reduce adult numbers, remove and destroy virus-infected plants early, use seedbed netting to protect young seedlings, and rotate insecticide groups only when whitefly numbers are clearly high."
+                },
+                bn: {
+                    name: "সাদা মাছি (হোয়াইটফ্লাই)",
+                    sci: "Bemisia tabaci",
+                    crop: "ফসল: মরিচ, টমেটো ও অন্যান্য সবজি",
+                    damage: "ক্ষতি: পাতার নিচে ছোট সাদা পোকা রস চুষে খায়, ফলে পাতা হলুদ হয়ে যায় ও গাছের বৃদ্ধি থমকে যায়, এবং আঠালো মধুরস নিঃসরণ করে যাতে কালো ছত্রাক জন্মায়। এর সবচেয়ে বড় ক্ষতি হলো টমেটো/মরিচের পাতা কোঁকড়ানো ভাইরাস ছড়ানো, যা ফলন মারাত্মকভাবে কমিয়ে দিতে পারে।",
+                    control: "ব্যবস্থাপনা: পূর্ণবয়স্ক পোকা পর্যবেক্ষণ ও কমাতে হলুদ আঠালো ফাঁদ ব্যবহার করুন, ভাইরাস-আক্রান্ত গাছ দ্রুত তুলে ধ্বংস করুন, চারা রক্ষায় নেট ব্যবহার করুন, এবং সাদা মাছির সংখ্যা স্পষ্টভাবে বেশি হলেই পালাক্রমে ভিন্ন গ্রুপের কীটনাশক ব্যবহার করুন।"
+                }
+            },
+
+            {
+                images: [
+    "images/pests/aphid-1.jpg",
+    "images/pests/aphid-2.jpg"
+],
+                en: {
+                    name: "Aphid",
+                    sci: "Aphididae (various species)",
+                    crop: "Crop: Chili, tomato, wheat and most vegetables",
+                    damage: "Damage: Small soft-bodied insects that cluster on new shoots and the underside of leaves, sucking sap and causing curling, yellowing and stunted growth; they also excrete honeydew that attracts sooty mould and can spread plant viruses.",
+                    control: "Management: Conserve natural predators such as ladybird beetles and hoverflies, spray a strong jet of water to dislodge light infestations, use yellow sticky traps, and treat with a recommended insecticide only when colonies are dense on new growth."
+                },
+                bn: {
+                    name: "জাব পোকা (এফিড)",
+                    sci: "Aphididae (বিভিন্ন প্রজাতি)",
+                    crop: "ফসল: মরিচ, টমেটো, গম ও অধিকাংশ সবজি",
+                    damage: "ক্ষতি: ছোট নরম দেহের পোকা নতুন কুঁড়ি ও পাতার নিচে দলবেঁধে রস চুষে খায়, ফলে পাতা কোঁকড়ে যায়, হলুদ হয়ে যায় এবং গাছের বৃদ্ধি ব্যাহত হয়; এরা মধুরসও নিঃসরণ করে যা কালো ছত্রাক ডেকে আনে এবং ভাইরাস ছড়াতে পারে।",
+                    control: "ব্যবস্থাপনা: লেডিবার্ড বিটল ও হোভারফ্লাইয়ের মতো প্রাকৃতিক শত্রু সংরক্ষণ করুন, হালকা আক্রমণে পানির জোর স্প্রে দিয়ে পোকা সরান, হলুদ আঠালো ফাঁদ ব্যবহার করুন, এবং নতুন ডগায় পোকার ঘনত্ব বেশি হলেই সুপারিশকৃত কীটনাশক প্রয়োগ করুন।"
+                }
+            },
+
+            {
+                images: [
+                    "images/pests/fruit-fly-1.jpg",
+                    "images/pests/fruit-fly-2.jpg"
+                ],
+                en: {
+                    name: "Fruit Fly",
+                    sci: "Bactrocera spp.",
+                    crop: "Crop: Fruits and cucurbit vegetables",
+                    damage: "Damage: Females lay eggs inside ripening fruit; the hatched maggots feed inside, causing the fruit to rot, drop early or become unmarketable, often with a small puncture mark visible on the skin.",
+                    control: "Management: Collect and destroy fallen/infested fruit regularly, use pheromone (methyl eugenol) traps to catch and monitor male flies, bag developing fruit where practical, and time any spray to the egg-laying period rather than after maggots are already inside."
+                },
+                bn: {
+                    name: "ফলের মাছি",
+                    sci: "Bactrocera spp.",
+                    crop: "ফসল: ফলমূল ও লাউজাতীয় সবজি",
+                    damage: "ক্ষতি: স্ত্রী মাছি পাকা ফলের ভেতরে ডিম পাড়ে; ডিম থেকে বের হওয়া শুককীট ভেতরে খেয়ে ফলকে পচিয়ে ফেলে, ফল আগেভাগে ঝরে পড়ে বা বাজারজাত করার অযোগ্য হয়ে যায়, প্রায়ই ফলের গায়ে একটি ছোট ছিদ্রচিহ্ন দেখা যায়।",
+                    control: "ব্যবস্থাপনা: নিয়মিত পড়ে যাওয়া/আক্রান্ত ফল কুড়িয়ে ধ্বংস করুন, পুরুষ মাছি ধরতে ও পর্যবেক্ষণ করতে ফেরোমন (মিথাইল ইউজেনল) ফাঁদ ব্যবহার করুন, সম্ভব হলে ফল ব্যাগে মুড়ে দিন, এবং শুককীট ভেতরে ঢোকার পর নয় বরং ডিম পাড়ার সময় লক্ষ্য করে স্প্রে করুন।"
+                }
+            }
+
+        ];
+
+
+        function renderPestCards() {
+
+    const container =
+        document.getElementById("pest-cards-container");
+
+    if (!container) {
+        return;
+    }
+
+    container.innerHTML = pestData.map(function (pest) {
+
+        const d = pest[currentLanguage];
+
+        const imagesHTML = (pest.images || []).map(function (src) {
+            return `
+                <img
+                    src="${src}"
+                    alt="${d.name}"
+                    class="pest-photo"
+                >
+            `;
+        }).join("");
+
+        return `
+            <div class="pest-card">
+
+                <div class="pest-images">
+                    ${imagesHTML}
+                </div>
+
+                <h3>${d.name}</h3>
+
+                <p class="pest-sci">${d.sci}</p>
+
+                <p class="pest-row">
+                    <strong>${d.crop}</strong>
+                </p>
+
+                <p class="pest-row">
+                    ${d.damage}
+                </p>
+
+                <p class="pest-row">
+                    ${d.control}
+                </p>
+
+            </div>
+        `;
+
+    }).join("");
+
+}
+
+        /* =========================
+           LANGUAGE FUNCTION
+           (Loops through every element that carries a
+           data-i18n attribute and swaps its text/HTML,
+           then re-renders any open crop/product panel.)
+        ========================== */
+
+        let currentLanguage =
+            localStorage.getItem("zeeAgriLanguage") || "en";
+
+
+        function changeLanguage(language) {
+
+            currentLanguage = language;
+
+            localStorage.setItem(
+                "zeeAgriLanguage",
+                language
             );
 
+            document.getElementById("html-root").setAttribute("lang", language);
 
-            let difference =
-                Math.floor(
-                    (currentDate - baseDate) /
-                    (1000 * 60 * 60 * 24)
-                );
+            document.getElementById("language-select").value = language;
+            document.getElementById("settings-language").value = language;
 
+            document.getElementById("page-title").textContent =
+                translations[language].pageTitle;
 
-            let banglaYear = 1433;
+            document.title =
+                translations[language].pageTitle;
 
+            const dict = translations[language];
 
-            /*
-                Find Bengali year
-            */
+            document.querySelectorAll("[data-i18n]").forEach(function (el) {
 
-            if (difference >= 0) {
+                const key = el.getAttribute("data-i18n");
 
-                banglaYear =
-                    1433 +
-                    Math.floor(difference / 365);
+                if (dict[key] === undefined) {
+                    return;
+                }
 
-            } else {
+                // A handful of strings intentionally contain <strong> tags
+                // (AEZ info paragraphs), so those use innerHTML; everything
+                // else is safely set with textContent.
+                if (dict[key].indexOf("<strong>") !== -1) {
+                    el.innerHTML = dict[key];
+                } else {
+                    el.textContent = dict[key];
+                }
 
-                banglaYear =
-                    1433 +
-                    Math.floor(difference / 365);
+            });
 
-            }
-
-
-            /*
-                Calculate day within Bengali year
-            */
-
-            let dayOfYear = difference;
-
-            while (dayOfYear < 0) {
-
-                banglaYear--;
-
-                dayOfYear += 365;
-
-            }
-
-
-            /*
-                Month lengths according to
-                Bangladesh revised calendar
-            */
-
-            const monthLengths = [
-                31, 31, 31, 31, 31,
-                30, 30, 30, 30, 30,
-                29, 30
-            ];
-
-
-            /*
-                Approximate leap year handling
-                for Falgun
-            */
-
-            const gregorianYear =
-                date.getFullYear();
-
-
-            const isLeapYear =
-                (
-                    gregorianYear % 4 === 0 &&
-                    gregorianYear % 100 !== 0
-                ) ||
-                (gregorianYear % 400 === 0);
-
-
-            if (isLeapYear) {
-                monthLengths[10] = 30;
-            }
-
-
-            let monthIndex = 0;
-
-
-            while (
-                dayOfYear >= monthLengths[monthIndex] &&
-                monthIndex < 11
-            ) {
-
-                dayOfYear -=
-                    monthLengths[monthIndex];
-
-                monthIndex++;
-
-            }
-
-
-            const banglaDay =
-                dayOfYear + 1;
-
-
-            return {
-                day: banglaDay,
-                month: banglaMonths[monthIndex],
-                year: banglaYear
-            };
+            updateCropLanguage();
+            updateProductLanguage();
+            renderPestCards();
 
         }
 
 
-        /* ==========================================
-           BANGLA NUMBER CONVERTER
-        ========================================== */
+        /* =========================
+           CROP LANGUAGE UPDATE
+        ========================== */
 
-        function toBanglaNumber(number) {
+        let selectedCrop = null;
 
-            const englishNumbers =
-                "0123456789";
-
-            const banglaNumbers =
-                "০১২৩৪৫৬৭৮৯";
-
-
-            return String(number)
-                .split("")
-                .map(function (digit) {
-
-                    const index =
-                        englishNumbers.indexOf(digit);
-
-                    return index !== -1
-                        ? banglaNumbers[index]
-                        : digit;
-
-                })
-                .join("");
-
-        }
-
-
-        /* ==========================================
-           UPDATE DATE
-        ========================================== */
-
-        function updateDate() {
-
-            const today = new Date();
-
-
-            const englishDate =
-                today.toLocaleDateString(
-                    "en-GB",
-                    {
-                        day: "numeric",
-                        month: "long",
-                        year: "numeric"
-                    }
-                );
-
-
-            const bangla =
-                getBanglaDate(today);
-
-
-            const banglaDate =
-                toBanglaNumber(bangla.day)
-                + " "
-                + bangla.month
-                + " "
-                + toBanglaNumber(bangla.year)
-                + " বঙ্গাব্দ";
-
-
-            document.getElementById(
-                "english-date"
-            ).textContent =
-                englishDate;
-
-
-            document.getElementById(
-                "bangla-date"
-            ).textContent =
-                banglaDate;
-
-        }
-
-
-        updateDate();
-
-
-        /*
-            Update automatically every minute
-        */
-
-        setInterval(
-            updateDate,
-            60000
-        );
-
-
-        /* ==========================================
-           CROP INFORMATION
-        ========================================== */
 
         function showCrop(crop) {
 
-            const cropInfo =
-                document.getElementById("crop-info");
+            selectedCrop = crop;
+
+            const data =
+                cropData[crop][currentLanguage];
+
+            document.getElementById("crop-info").innerHTML = `
+
+                <h2>${data.title}</h2>
+
+                <p>
+                    ${data.text}
+                </p>
+
+            `;
+
+            document.getElementById("crop-info")
+                .scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+        }
 
 
-            if (crop === "rice") {
+        function updateCropLanguage() {
 
-                cropInfo.innerHTML = `
-
-                    <h2>🌾 Rice (ধান)</h2>
-
-                    <p>
-                        <strong>Crop Type:</strong>
-                        Cereal Crop
-                    </p>
-
-                    <p>
-                        <strong>Growing Seasons:</strong>
-                        Aus, Aman, Boro
-                    </p>
-
-                    <p>
-                        <strong>Suitable Soil:</strong>
-                        Loam to clay loam soil
-                    </p>
-
-                    <p>
-                        <strong>Climate:</strong>
-                        Warm and humid climate
-                    </p>
-
-                    <p>
-                        <strong>Major Pests:</strong>
-                        Rice stem borer, Brown planthopper
-                    </p>
-
-                    <p>
-                        <strong>Major Diseases:</strong>
-                        Blast, Bacterial leaf blight
-                    </p>
-
-                    <p>
-                        <strong>IPM:</strong>
-                        Field monitoring, resistant varieties,
-                        balanced fertilizer use and biological control.
-                    </p>
-
-                    <p>
-                        <strong>Harvesting:</strong>
-                        Depending on variety and season
-                    </p>
-
-                `;
-
+            if (!selectedCrop) {
+                return;
             }
 
+            const data =
+                cropData[selectedCrop][currentLanguage];
 
-            else if (crop === "wheat") {
+            document.getElementById("crop-info").innerHTML = `
 
-                cropInfo.innerHTML = `
+                <h2>${data.title}</h2>
 
-                    <h2>🌾 Wheat (গম)</h2>
+                <p>
+                    ${data.text}
+                </p>
 
-                    <p>
-                        <strong>Crop Type:</strong>
-                        Cereal Crop
-                    </p>
+            `;
 
-                    <p>
-                        <strong>Growing Season:</strong>
-                        Rabi
-                    </p>
-
-                    <p>
-                        <strong>Suitable Soil:</strong>
-                        Well-drained loam soil
-                    </p>
-
-                    <p>
-                        <strong>Climate:</strong>
-                        Cool and dry climate
-                    </p>
-
-                    <p>
-                        <strong>Major Pests:</strong>
-                        Aphid, Armyworm
-                    </p>
-
-                    <p>
-                        <strong>Major Diseases:</strong>
-                        Rust, Leaf blight
-                    </p>
-
-                    <p>
-                        <strong>IPM:</strong>
-                        Use healthy seed, field monitoring
-                        and proper crop management.
-                    </p>
-
-                    <p>
-                        <strong>Harvesting:</strong>
-                        When the crop becomes fully mature
-                    </p>
-
-                `;
-
-            }
+        }
 
 
-            else if (crop === "maize") {
+        /* =========================
+           PRODUCTS
+        ========================== */
 
-                cropInfo.innerHTML = `
-
-                    <h2>🌽 Maize (ভুট্টা)</h2>
-
-                    <p>
-                        <strong>Crop Type:</strong>
-                        Cereal Crop
-                    </p>
-
-                    <p>
-                        <strong>Growing Season:</strong>
-                        Rabi and Kharif
-                    </p>
-
-                    <p>
-                        <strong>Suitable Soil:</strong>
-                        Well-drained fertile soil
-                    </p>
-
-                    <p>
-                        <strong>Climate:</strong>
-                        Warm climate
-                    </p>
-
-                    <p>
-                        <strong>Major Pests:</strong>
-                        Fall armyworm, Stem borer
-                    </p>
-
-                    <p>
-                        <strong>Major Diseases:</strong>
-                        Leaf blight, Downy mildew
-                    </p>
-
-                    <p>
-                        <strong>IPM:</strong>
-                        Regular field monitoring, healthy seed,
-                        balanced fertilizer and proper pest management.
-                    </p>
-
-                    <p>
-                        <strong>Harvesting:</strong>
-                        Harvest when the crop reaches
-                        appropriate maturity.
-                    </p>
-
-                `;
-
-            }
+        let selectedProduct = null;
 
 
-            else if (crop === "chili") {
+        function showProduct(product) {
 
-                cropInfo.innerHTML = `
+            selectedProduct = product;
 
-                    <h2>🌶️ Chili (মরিচ)</h2>
+            const data =
+                productData[product][currentLanguage];
 
-                    <p>
-                        <strong>Crop Type:</strong>
-                        Vegetable / Spice Crop
-                    </p>
+            const info =
+                document.getElementById("product-info");
 
-                    <p>
-                        <strong>Growing Season:</strong>
-                        Rabi and Kharif
-                    </p>
+            info.style.display = "block";
 
-                    <p>
-                        <strong>Suitable Soil:</strong>
-                        Fertile, well-drained soil
-                    </p>
+            info.innerHTML = `
 
-                    <p>
-                        <strong>Climate:</strong>
-                        Warm climate
-                    </p>
+                <h2>${data.title}</h2>
 
-                    <p>
-                        <strong>Major Pests:</strong>
-                        Thrips, Aphid, Mite
-                    </p>
+                <p>
+                    ${data.text}
+                </p>
 
-                    <p>
-                        <strong>Major Diseases:</strong>
-                        Anthracnose, Leaf curl
-                    </p>
+            `;
 
-                    <p>
-                        <strong>IPM:</strong>
-                        Regular monitoring, sanitation,
-                        healthy seedlings and appropriate
-                        biological control.
-                    </p>
-
-                    <p>
-                        <strong>Harvesting:</strong>
-                        Harvest according to market
-                        requirement and variety.
-                    </p>
-
-                `;
-
-            }
-
-
-            else if (crop === "tomato") {
-
-                cropInfo.innerHTML = `
-
-                    <h2>🍅 Tomato (টমেটো)</h2>
-
-                    <p>
-                        <strong>Crop Type:</strong>
-                        Vegetable Crop
-                    </p>
-
-                    <p>
-                        <strong>Growing Season:</strong>
-                        Mainly Rabi
-                    </p>
-
-                    <p>
-                        <strong>Suitable Soil:</strong>
-                        Fertile, well-drained loam soil
-                    </p>
-
-                    <p>
-                        <strong>Climate:</strong>
-                        Mild and relatively cool climate
-                    </p>
-
-                    <p>
-                        <strong>Major Pests:</strong>
-                        Fruit borer, Whitefly, Aphid
-                    </p>
-
-                    <p>
-                        <strong>Major Diseases:</strong>
-                        Early blight, Late blight,
-                        Bacterial wilt
-                    </p>
-
-                    <p>
-                        <strong>IPM:</strong>
-                        Healthy seedlings, field sanitation,
-                        monitoring and integrated pest management.
-                    </p>
-
-                    <p>
-                        <strong>Harvesting:</strong>
-                        Harvest when fruits reach
-                        appropriate maturity.
-                    </p>
-
-                `;
-
-            }
-
-
-            cropInfo.scrollIntoView({
+            info.scrollIntoView({
                 behavior: "smooth",
                 block: "center"
             });
@@ -1567,35 +2516,235 @@
         }
 
 
-        /* ==========================================
-           MOVABLE DATE WIDGET
-        ========================================== */
+        function updateProductLanguage() {
+
+            if (!selectedProduct) {
+                return;
+            }
+
+            const data =
+                productData[selectedProduct][currentLanguage];
+
+            document.getElementById("product-info").innerHTML = `
+
+                <h2>${data.title}</h2>
+
+                <p>
+                    ${data.text}
+                </p>
+
+            `;
+
+        }
+
+
+        /* =========================
+           DARK MODE
+        ========================== */
+
+        let savedTheme =
+            localStorage.getItem("zeeAgriTheme") || "light";
+
+
+        function setTheme(theme) {
+
+            if (theme === "dark") {
+
+                document.body.classList.add("dark");
+
+            } else {
+
+                document.body.classList.remove("dark");
+
+            }
+
+            localStorage.setItem(
+                "zeeAgriTheme",
+                theme
+            );
+
+            document.getElementById("theme-select").value =
+                theme;
+
+            document.getElementById("theme-button").textContent =
+                theme === "dark" ? "☀️" : "🌙";
+
+        }
+
+
+        function toggleDarkMode() {
+
+            const isDark =
+                document.body.classList.contains("dark");
+
+            setTheme(
+                isDark ? "light" : "dark"
+            );
+
+        }
+
+
+        /* =========================
+           SETTINGS
+        ========================== */
+
+        function toggleSettings() {
+
+            document
+                .getElementById("settings-panel")
+                .classList.toggle("show");
+
+        }
+
+
+        function changeFontSize(size) {
+
+            if (size === "large") {
+
+                document.body.style.fontSize = "17px";
+
+            }
+
+            else if (size === "extra") {
+
+                document.body.style.fontSize = "19px";
+
+            }
+
+            else {
+
+                document.body.style.fontSize = "16px";
+
+            }
+
+            localStorage.setItem(
+                "zeeAgriFontSize",
+                size
+            );
+
+        }
+
+
+        function resetSettings() {
+
+            localStorage.removeItem("zeeAgriLanguage");
+
+            localStorage.removeItem("zeeAgriTheme");
+
+            localStorage.removeItem("zeeAgriFontSize");
+
+            currentLanguage = "en";
+
+            document.body.style.fontSize = "16px";
+
+            changeLanguage("en");
+
+            setTheme("light");
+
+            document.getElementById("font-size-select").value =
+                "normal";
+
+        }
+
+
+        /* =========================
+           DATE
+        ========================== */
+
+        const banglaMonths = [
+            "বৈশাখ",
+            "জ্যৈষ্ঠ",
+            "আষাঢ়",
+            "শ্রাবণ",
+            "ভাদ্র",
+            "আশ্বিন",
+            "কার্তিক",
+            "অগ্রহায়ণ",
+            "পৌষ",
+            "মাঘ",
+            "ফাল্গুন",
+            "চৈত্র"
+        ];
+
+
+        function updateDate() {
+
+            const now = new Date();
+
+            const englishDate =
+                now.toLocaleDateString(
+                    "en-US",
+                    {
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric"
+                    }
+                );
+
+            document.getElementById(
+                "english-date"
+            ).textContent = englishDate;
+
+
+            /*
+             * Approximate Bangla calendar display.
+             * Main purpose: show Bangla month/date alongside
+             * the English date.
+             */
+
+            let year =
+                now.getFullYear() - 593;
+
+            let month =
+                now.getMonth();
+
+            let day =
+                now.getDate();
+
+            let banglaMonthIndex =
+                (month + 9) % 12;
+
+            let banglaDay =
+                day;
+
+            document.getElementById(
+                "bangla-date"
+            ).textContent =
+                `বাংলা: ${banglaDay} ${banglaMonths[banglaMonthIndex]} ${year}`;
+
+        }
+
+
+        updateDate();
+
+        setInterval(
+            updateDate,
+            60000
+        );
+
+
+        /* =========================
+           DRAGGABLE DATE WIDGET
+        ========================== */
 
         const dateWidget =
             document.getElementById("date-widget");
 
-
-        let isDragging = false;
+        let dragging = false;
 
         let offsetX = 0;
-
         let offsetY = 0;
 
 
         dateWidget.addEventListener(
-            "pointerdown",
+            "mousedown",
             function(event) {
 
-                isDragging = true;
-
-                dateWidget.setPointerCapture(
-                    event.pointerId
-                );
-
+                dragging = true;
 
                 const rect =
                     dateWidget.getBoundingClientRect();
-
 
                 offsetX =
                     event.clientX - rect.left;
@@ -1603,93 +2752,93 @@
                 offsetY =
                     event.clientY - rect.top;
 
+            }
+        );
+
+
+        document.addEventListener(
+            "mousemove",
+            function(event) {
+
+                if (!dragging) {
+                    return;
+                }
+
+                dateWidget.style.left =
+                    (event.clientX - offsetX) + "px";
+
+                dateWidget.style.top =
+                    (event.clientY - offsetY) + "px";
 
                 dateWidget.style.right =
                     "auto";
 
-                dateWidget.style.bottom =
-                    "auto";
-
             }
         );
 
 
-        dateWidget.addEventListener(
-            "pointermove",
-            function(event) {
-
-                if (!isDragging) {
-                    return;
-                }
-
-
-                let newLeft =
-                    event.clientX - offsetX;
-
-                let newTop =
-                    event.clientY - offsetY;
-
-
-                /*
-                    Keep widget inside screen
-                */
-
-                const maxLeft =
-                    window.innerWidth -
-                    dateWidget.offsetWidth;
-
-                const maxTop =
-                    window.innerHeight -
-                    dateWidget.offsetHeight;
-
-
-                newLeft =
-                    Math.max(
-                        0,
-                        Math.min(newLeft, maxLeft)
-                    );
-
-
-                newTop =
-                    Math.max(
-                        0,
-                        Math.min(newTop, maxTop)
-                    );
-
-
-                dateWidget.style.left =
-                    newLeft + "px";
-
-                dateWidget.style.top =
-                    newTop + "px";
-
-            }
-        );
-
-
-        dateWidget.addEventListener(
-            "pointerup",
-            function(event) {
-
-                isDragging = false;
-
-                try {
-
-                    dateWidget.releasePointerCapture(
-                        event.pointerId
-                    );
-
-                } catch (error) {}
-
-            }
-        );
-
-
-        dateWidget.addEventListener(
-            "pointercancel",
+        document.addEventListener(
+            "mouseup",
             function() {
 
-                isDragging = false;
+                dragging = false;
+
+            }
+        );
+
+
+        /* =========================
+           LOAD SAVED SETTINGS
+        ========================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                const savedLanguage =
+                    localStorage.getItem(
+                        "zeeAgriLanguage"
+                    ) || "en";
+
+                const savedTheme =
+                    localStorage.getItem(
+                        "zeeAgriTheme"
+                    ) || "light";
+
+                const savedFontSize =
+                    localStorage.getItem(
+                        "zeeAgriFontSize"
+                    ) || "normal";
+
+
+                document.getElementById(
+                    "language-select"
+                ).value = savedLanguage;
+
+                document.getElementById(
+                    "settings-language"
+                ).value = savedLanguage;
+
+                document.getElementById(
+                    "theme-select"
+                ).value = savedTheme;
+
+                document.getElementById(
+                    "font-size-select"
+                ).value = savedFontSize;
+
+
+                changeLanguage(
+                    savedLanguage
+                );
+
+                setTheme(
+                    savedTheme
+                );
+
+                changeFontSize(
+                    savedFontSize
+                );
 
             }
         );
